@@ -1,0 +1,41 @@
+.animation_spin {
+  animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-20deg);
+  }
+}
+.btnnext:hover {
+  background: #f3edda;
+}
+.btnpre:hover {
+  background: #f3edda;
+}
+.alice-carousel__next-btn {
+  font-size: 60px;
+  position: absolute;
+  top: 35%;
+}
+
+.alice-carousel__prev-btn {
+  font-size: 60px;
+  font-size: 60px;
+  position: absolute;
+  top: 35%;
+  right: 2%;
+}
+
+.alice-carousel .alice-carousel__next-btn,
+.alice-carousel .alice-carousel__prev-btn {
+  width: 50px;
+  /* position: relative; */
+}

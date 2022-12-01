@@ -1,0 +1,9 @@
+.container {
+  max-width: 100%;
+  width: 100%;
+  color: rgb(199, 190, 190);
+  background-image: url("../../assets/footer.png");
+  background-repeat: no-repeat;
+  background-size: fill;
+  background-position: 60%;
+}
