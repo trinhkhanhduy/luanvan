@@ -21,8 +21,8 @@ function Manage() {
   const isLogin = useSelector((state) => state.employee?.current[0]?.email_nv);
 
   return (
-    <div className="flex">
-      <div>{isLogin ? <Navigation /> : ""}</div>
+    <div className="flex ">
+      <div className="h-[100vh]">{isLogin ? <Navigation /> : ""}</div>
       <div className="flex-1 ">
         {!isLogin ? (
           <div className="text-[35px] font-[900]  text-blue-500 bg-text-color bg-clip-text absolute left-[50%] translate-x-[-50%]">

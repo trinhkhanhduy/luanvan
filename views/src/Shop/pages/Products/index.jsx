@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import brandAPI from "../../../api/brandAPI";
 import sizeAPI from "../../../api/sizeAPI";
@@ -21,26 +21,35 @@ function Products() {
   const dispatch = useDispatch();
 
   const dataProduct = useSelector((state) => state?.product?.productlist);
-
+  // const isMout = useRef(true);
   useEffect(() => {
     (async () => {
-      unwrapResult(dispatch(product()));
+      // unwrapResult(dispatch(product()));
       const brand = await brandAPI.getList();
       const size = await sizeAPI.getList();
-      setSize(size);
-      setBrand(brand);
+      // if (isMout.current) {
+        setSize(size);
+        setBrand(brand);
+      // }
+
       if (checked.length !== 0) {
         if (checkedBrand.length !== 0) {
-          const dataSize = await filterAPI.sortSizeBrand({ check: checked,brand:checkedBrand });
+          const dataSize = await filterAPI.sortSizeBrand({
+            check: checked,
+            brand: checkedBrand,
+          });
           dispatch(addListProduct(dataSize));
         } else {
           const dataSize = await filterAPI.sortSize({ check: checked });
           dispatch(addListProduct(dataSize));
         }
       }
+ 
     })();
+    // return () => {
+    //   isMout.current = false;
+    // };
   }, [checked]);
-
   const filterSort = async (data) => {
     const dataFilter = await filterAPI.sortBy(data);
     dispatch(addListProduct(dataFilter));
@@ -86,7 +95,7 @@ function Products() {
     <div>
       <div className="w-[100%] min-h-[50vh] ">
         <div className="flex gap-5 w-[80%] mx-auto mt-10">
-          <div className="w-[20%] mt-5">
+          <div className="w-[20%]">
             <div className="mb-5">
               <select
                 onChange={(e) => filterSort(e.target.value)}
@@ -160,7 +169,7 @@ function Products() {
               </button>
             </div>
           </div>
-          <div className="w-[80%] min-h-[53vh] mx-auto mt-5">
+          <div className="w-[80%] min-h-[53vh] mx-auto ">
             <div className="grid grid-cols-4 gap-5">
               {dataProduct?.map((data, idx) => (
                 <Card key={idx} data={data} />

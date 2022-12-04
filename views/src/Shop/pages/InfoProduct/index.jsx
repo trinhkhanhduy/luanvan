@@ -19,7 +19,7 @@ import { Rating } from "@mui/material";
 
 function InfoProduct() {
   const isLogin = useSelector((state) => state.user.current?.dataUser?.length);
-  console.log(isLogin)
+  console.log(isLogin);
   let params = useParams();
   const dispatch = useDispatch();
   const navigation = useNavigate();
@@ -38,7 +38,6 @@ function InfoProduct() {
   const [slSize, setSlSize] = useState("");
   const [danhgia, setdanhgia] = useState([]);
   const cartList = useSelector((state) => state.cart?.cartItem);
-  console.log(danhgia);
   useEffect(() => {
     (async () => {
       const resProduct = await productAPI.getProduct(params.SP);
@@ -62,7 +61,13 @@ function InfoProduct() {
   }, 0);
   const soluong = 1;
   const addCart = (idsp) => {
-    if (!isLogin) return navigation("/shop/login");
+    if (!isLogin) {
+      enqueueSnackbar("Vui lòng đăng nhập", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+      return navigation("/shop/login");
+    }
     if (!!slSize) {
       if (numberProduct > 0) {
         dispatch(
@@ -170,6 +175,8 @@ function InfoProduct() {
       idkt,
       slColor
     );
+
+
     setNumberProduct(result[0].so_luong_sp);
     setSlSize(result);
 
@@ -316,8 +323,8 @@ function InfoProduct() {
             </button>
           </div>
           <div className="w-full leading-10">
-            <p>CHÍNH SÁCH GIAO HÀNG VÀ ĐỔI TRẢ</p>
-            <p>HƯỠNG DẪN BẢO QUẢN</p>
+            {/* <p>CHÍNH SÁCH GIAO HÀNG VÀ ĐỔI TRẢ</p>
+            <p>HƯỠNG DẪN BẢO QUẢN</p> */}
           </div>
         </div>
       </div>
@@ -335,7 +342,7 @@ function InfoProduct() {
             </p>
             <p className="text-[22px] text-center font-medium ml-5">
               <sup>
-                {isNaN(sum / danhgia.length) ? "" : sum / danhgia.length}
+                {isNaN(sum / danhgia.length) ? "" : (sum / danhgia.length).toFixed(0)}
               </sup>
               /<sub>5</sub>
             </p>

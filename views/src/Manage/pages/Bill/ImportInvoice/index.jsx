@@ -52,7 +52,8 @@ function ImportInvoice() {
   useEffect(() => {
     (async () => {
       try {
-        const res_products = await productAPI.getProductList();
+        const res_products = await productAPI.getProductListManage();
+        
         setDataProduct(res_products);
         const res_importInvoice =
           await importInvoiceAPI.getListImportInvoiceAPI();
@@ -174,7 +175,7 @@ function ImportInvoice() {
           <div>
             <button
               onClick={() => handleDelete(params.row.idhdn)}
-              className="block mx-auto py-2 px-4 bg-blue-500 text-white rounded-lg w-[120px]"
+              className="block mx-auto py-2 px-4 bg-black text-white rounded-lg w-[120px]"
             >
               Xóa hóa đơn
             </button>

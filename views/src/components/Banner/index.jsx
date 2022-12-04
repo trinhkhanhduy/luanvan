@@ -9,9 +9,9 @@ import { useEffect } from "react";
 import bannerApi from "../../api/bannerAPI";
 import { Link } from "react-router-dom";
 import filterAPI from "../../api/filterAPI";
-import { addListProduct } from "../../redux/productSlice";
+import { addListProduct, addListProductSale } from "../../redux/productSlice";
 import { useDispatch } from "react-redux";
-
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 function Banner(props) {
   const dispatch = useDispatch();
   const [banner, setBanner] = useState([]);
@@ -33,6 +33,14 @@ function Banner(props) {
       dispatch(addListProduct(dataFilter));
     }
   };
+  const fillterBrandSale = async (id_th) => {
+    if (id_th === null) {
+      return;
+    } else {
+      const dataFilter = await filterAPI.sortBrandSale(id_th);
+      dispatch(addListProductSale(dataFilter));
+    }
+  };
 
   return (
     <div className="p-7 ">
@@ -41,16 +49,43 @@ function Banner(props) {
         items={banner.map((item, index) => {
           return (
             <div
-              className="flex justify-center z-10"
+              className="flex justify-center h-[70vh] "
               data-value={index}
               key={index}
             >
-              <Link to={item.loaiab === null ? "" : item.loaiab} className="border-2">
+              <Link
+                to={item.loaiab === null ? "" : item.loaiab}
+                className="border-2 w-[100%]"
+              >
+                {item.loaiab ? (
+                  <div
+                    className="  z-10 absolute bottom-[10%] left-[5%]"
+                    onClick={() =>
+                      item.loaiab === "/shop/sale"
+                        ? fillterBrandSale(item?.id_th)
+                        : fillterBrand(item?.id_th)
+                    }
+                  >
+                    <div className="link_wrapper">
+                      <div className="inarrow">
+                        Mua ngay
+                        <ExitToAppIcon />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <img
-                  className="w-[100%] shadow-[0px_5px_15px_rgba(0,0,0,0.35)] cursor-pointer border-2 "
+                  className="w-[100%] shadow-[0px_5px_15px_rgba(0,0,0,0.35)] cursor-pointer border-2 h-[100%]"
                   src={item.ten_ab.slice(12, item.ten_ab.length)}
                   alt="hinh anh"
-                  onClick={() => fillterBrand(item?.id_th)}
+                  onClick={() =>
+                    item.loaiab === "/shop/sale"
+                      ? fillterBrandSale(item?.id_th)
+                      : fillterBrand(item?.id_th)
+                  }
                 />
               </Link>
             </div>
@@ -59,8 +94,9 @@ function Banner(props) {
         responsive={responsive}
         controlsStrategy="alternate"
         autoPlay
+        animationDuration={1500}
         infinite
-        autoPlayInterval={5000}
+        autoPlayInterval={7000}
         disableDotsControls={true}
         renderPrevButton={() => {
           return (
@@ -87,8 +123,6 @@ function Banner(props) {
                   height: "35px",
                   border: "1px solid rgba(255,255,255,0.5)",
                   color: "#60A5FA",
-                
-              
                 }}
               />
             </p>

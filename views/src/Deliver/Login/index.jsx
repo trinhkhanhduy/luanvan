@@ -7,11 +7,14 @@ import employeeAPI from "../../api/employeeAPI";
 import { login } from "../../redux/employeeSlice";
 import { useSnackbar } from "notistack";
 import FormLogin from "./FormLogin";
+import { sha256 } from "js-sha256";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const id_cv = useSelector((state) => state.employee?.currentDeliver[0]?.id_cv);
+  const id_cv = useSelector(
+    (state) => state.employee?.currentDeliver[0]?.id_cv
+  );
   const { enqueueSnackbar } = useSnackbar();
   const defaultValues = {
     email: "",
@@ -31,46 +34,39 @@ function Login() {
   } = useForm({ defaultValues });
   const setData = async (data) => {
     try {
-      if (data.email && data.password) {
-        const res = await employeeAPI.login({
-          email: data.email,
-          password: data.password,
+      unwrapResult(
+        dispatch(
+          login({
+            email: data.email,
+            password: sha256(data.password),
+          })
+        )
+      );
+      const auth = await employeeAPI.login({
+        email: data.email,
+        password: sha256(data.password),
+      });
+      if (auth[0].id_cv === "CV04") {
+        enqueueSnackbar("Đăng nhập thành công", {
+          variant: "success",
+          autoHideDuration: 2000,
         });
-        if (res.length !== 0) {
-          if (res[0].id_cv === "CV04") {
-            unwrapResult(
-              dispatch(
-                login({
-                  email: data.email,
-                  password: data.password,
-                })
-              )
-            );
-            navigate("/deliver/dashbroad");
-            enqueueSnackbar("Đăng nhập thành công", {
-              variant: "success",
-              autoHideDuration: 2000,
-            });
-          } else {
-            enqueueSnackbar("Tài khoản hoặc mật khẩu không đúng", {
-              variant: "error",
-              autoHideDuration: 2000,
-            });
-          }
-        } else {
-          enqueueSnackbar("Tài khoản hoặc mật khẩu không đúng", {
-            variant: "error",
-            autoHideDuration: 2000,
-          });
-        }
+      } else {
+        enqueueSnackbar("Tài khoản hoặc mật khẩu không đúng", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
       }
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar("Tài khoản hoặc mật khẩu không đúng", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
     }
   };
 
   return (
-    <div >
+    <div>
       <div className="text-[35px] font-[900] text-center text-blue-500 bg-text-color bg-clip-text mt-[10%]">
         GIAO HÀNG
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import brandAPI from "../../../api/brandAPI";
 import sizeAPI from "../../../api/sizeAPI";
@@ -21,26 +21,36 @@ function Sales() {
   const dataProductsale = useSelector(
     (state) => state?.product?.productlistsale
   );
-  console.log(dataProductsale)
+
+  // const isMout = useRef(true);
 
   useEffect(() => {
     (async () => {
-      unwrapResult(dispatch(product()));
+      // unwrapResult(dispatch(product()));
       const brand = await brandAPI.getList();
       const size = await sizeAPI.getList();
-      setSize(size);
-      setBrand(brand);
+      // if (isMout.current) {
+    
+        setSize(size);
+        setBrand(brand);
+      // }
       if (checked.length !== 0) {
         if (checkedBrand.length !== 0) {
-          const dataSize = await filterAPI.sortSizeBrandSale({ check: checked,brand:checkedBrand });
+          const dataSize = await filterAPI.sortSizeBrandSale({
+            check: checked,
+            brand: checkedBrand,
+          });
           dispatch(addListProductSale(dataSize));
         } else {
           const dataSize = await filterAPI.sortSizeSale({ check: checked });
           dispatch(addListProductSale(dataSize));
         }
       }
-      
+  
     })();
+    // return () => {
+    //   isMout.current = false;
+    // };
   }, [checked]);
 
   const filterSort = async (data) => {
@@ -51,7 +61,7 @@ function Sales() {
   const filterBrand = async (data) => {
     const dataFilter = await filterAPI.sortBrandSale(data);
     dispatch(addListProductSale(dataFilter));
-    setCheckBrand(data)
+    setCheckBrand(data);
   };
 
   const [value, setValue] = useState([500000, 1500000]);
@@ -70,7 +80,6 @@ function Sales() {
     });
   };
 
-
   const FilterRangePrice = async () => {
     const res = await filterAPI.rangePriceSale(value);
     dispatch(addListProductSale(res));
@@ -86,7 +95,7 @@ function Sales() {
   return (
     <div className=" relative w-[100%] min-h-[46vh] ">
       <div className="flex gap-5 w-[80%] mx-auto mt-10">
-        <div className="w-[20%] mt-5">
+        <div className="w-[20%]">
           <div className="mb-5">
             <select
               onChange={(e) => filterSort(e.target.value)}
@@ -112,25 +121,25 @@ function Sales() {
           </div>
 
           <div className="mb-5">
-              <div className="w-full py-[6px] px-4 bg-gray-200 outline-none rounded-lg shadow-md">
-                Kích Thước
-              </div>
-              <div className="w-full mt-2 h-[100%] rounded-lg border-2 border-gray-400 flex gap-3 py-1 px-2 flex-wrap ">
-                {size.map((item, index) => {
-                  return (
-                    <div key={index} className="flex">
-                      <input
-                        type="checkbox"
-                        checked={checked.includes(item.id_kt)}
-                        onChange={() => handCheck(item.id_kt)}
-                      />
-                      <p className="ml-2">{item.ten_kt}</p>
-                    </div>
-                  );
-                })}
-              </div>
+            <div className="w-full py-[6px] px-4 bg-gray-200 outline-none rounded-lg shadow-md">
+              Kích Thước
             </div>
-         
+            <div className="w-full mt-2 h-[100%] rounded-lg border-2 border-gray-400 flex gap-3 py-1 px-2 flex-wrap ">
+              {size.map((item, index) => {
+                return (
+                  <div key={index} className="flex">
+                    <input
+                      type="checkbox"
+                      checked={checked.includes(item.id_kt)}
+                      onChange={() => handCheck(item.id_kt)}
+                    />
+                    <p className="ml-2">{item.ten_kt}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="mb-5 p-4 bg-slate-100 rounded-md">
             <Slider
               getAriaLabel={() => "Temperature range"}

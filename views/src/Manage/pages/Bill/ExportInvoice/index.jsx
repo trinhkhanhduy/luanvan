@@ -79,6 +79,7 @@ function ExportInvoice() {
       setDataBill(result);
     })();
   }, [count, listOrder]);
+  console.log(dataBill);
   const handleConfirm = async () => {
     if (deliver) {
       await exportInvoiceAPI.updateStatus(idOrder, {
@@ -299,11 +300,15 @@ function ExportInvoice() {
                     <p>
                       Tổng tiền:{" "}
                       <strong>
-                        {" "}
-                        {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(tong)}{" "}
+                        {tong > 1000000
+                          ? new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(tong)
+                          : new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(tong + 30000)}
                       </strong>
                     </p>
                   </div>
@@ -515,10 +520,15 @@ function ExportInvoice() {
                     <tr className="total">
                       <td className="name">Tổng tiền</td>
                       <td colSpan={2} className="number">
-                        {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(tong)}{" "}
+                        {tong > 1000000
+                          ? new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(tong)
+                          : new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(tong + 30000)}
                       </td>
                     </tr>
                   </tfoot>

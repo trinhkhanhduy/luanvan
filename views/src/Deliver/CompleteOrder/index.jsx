@@ -18,13 +18,13 @@ function CompleteOrder() {
   return (
     <div className="pb-20">
       <div className="py-5">
-        <p className="text-[35px] font-[900] text-center bg-text-color bg-clip-text text-transparent">SHOP SHOES</p>
+        <p className="text-[35px] font-[900] text-center bg-text-color bg-clip-text text-transparent">DShop</p>
       </div>
       <div className="px-4">
         <p className="text-[20px]">Đơn hàng đã được giao</p>
         <div>
           {invoice?.map(({id_hdx, ten_kh, so_dien_thoai, tong_tien_hdx, dia_chi_hdx, trang_thai_gh}, idx) => (
-            <div key={idx} className="mt-5 bg-slate-100 p-4 rounded-lg shadow-lg">
+            <div key={idx} className="mt-5 bg-slate-100 p-4 rounded-lg shadow-lg max-w-[500px]">
               <Link to={`/deliver/${id_hdx}`}>
                 <p>Mã đơn hàng: {id_hdx}</p>
                 <p>Tên khách hàng: {ten_kh}</p>

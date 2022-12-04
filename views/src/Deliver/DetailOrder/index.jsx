@@ -56,7 +56,7 @@ console.log(exportInvoice)
   return (
     <div className="px-4 pb-20">
       <div className="py-5">
-        <p className="text-[35px] font-[900] text-center bg-text-color bg-clip-text text-transparent">SHOP SHOES</p>
+        <p className="text-[35px] font-[900] text-center bg-text-color bg-clip-text text-transparent">DShop</p>
       </div>
       <div>
         <Link to={"/deliver/dashbroad"}>

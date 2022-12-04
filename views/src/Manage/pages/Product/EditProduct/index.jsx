@@ -28,7 +28,7 @@ function EditProduct() {
   const [dataAll, setDataAll] = useState([]);
   const [detailProduct, setDetailProduct] = useState([]);
   const [addFormData, setAddFormData] = useState({
-    idsp:"",
+    idsp: "",
     mausac: "",
     kichthuoc: "",
     soluong: "",
@@ -224,10 +224,10 @@ function EditProduct() {
   };
 
   return (
-    <div>
+    <div className="relative">
       <NavLink to="/manage/product/listproducts">
         <button className="ml-7 px-10 py-2 mb-5 text-white bg-slate-400 rounded shadow-lg">
-          Back
+          Trở về
         </button>
       </NavLink>
       <form id="addProduct" onSubmit={handleSubmit((data) => setData(data))}>
@@ -346,42 +346,15 @@ function EditProduct() {
           </div>
         </div>
 
-        <div className="mt-4 mb-10 px-7 absolute bottom-[5%] right-[0%] w-[55%] ">
-          <table className="w-[60%]">
-            <thead>
-              <tr>
-                <th className="h-8 border border-slate-400">Màu Sắc</th>
-                <th className="h-8 border border-slate-400">Kích Thước</th>
-                <th className="h-8 border border-slate-400">Số Lượng</th>
-              </tr>
-            </thead>
-            <tbody>
-              {detailProduct?.map(({ mausac, kichthuoc, soluong }, idx) => (
-                <tr key={idx}>
-                  <td className="w-[20%] text-center border border-slate-400">
-                    {mausac}
-                  </td>
-                  <td className="w-[20%] text-center border border-slate-400">
-                    {kichthuoc}
-                  </td>
-                  <td className="w-[20%] text-center border border-slate-400">
-                    {soluong}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-  
         <div className="mt-5">
           <button className="mt-1 ml-7 px-10 py-2 text-white bg-sky-600 rounded shadow-lg">
-            Edit
+            Sửa
           </button>
         </div>
       </form>
 
       <form onSubmit={handleAddFormSubmit}>
-        <div className="flex justify-between gap-6 w-[40%] mt-6 mb-10 px-7  absolute bottom-[10%] left-[45%]">
+        <div className="flex justify-between gap-6 w-[40%] mt-6 mb-10 px-7  absolute bottom-[22%] left-[45%]">
           <div className="w-[30%]">
             <select
               name="mausac"
@@ -421,9 +394,35 @@ function EditProduct() {
               type="text"
             />
           </div>
-          <button className="px-4 bg-slate-400 rounded-lg">ADD</button>
+          <button className="px-4 bg-slate-400 rounded-lg">Thêm</button>
         </div>
       </form>
+      <div className="absolute top-[69%] w-[50%] left-[15%] ">
+        <table className="w-[60%]">
+          <thead>
+            <tr>
+              <th className="h-8 border border-slate-400">Màu Sắc</th>
+              <th className="h-8 border border-slate-400">Kích Thước</th>
+              <th className="h-8 border border-slate-400">Số Lượng</th>
+            </tr>
+          </thead>
+          <tbody>
+            {detailProduct?.map(({ mausac, kichthuoc, soluong }, idx) => (
+              <tr key={idx}>
+                <td className="w-[20%] text-center border border-slate-400">
+                  {color.filter((item) => item.id_ms === mausac)[0].ten_ms}
+                </td>
+                <td className="w-[20%] text-center border border-slate-400">
+                  {size.filter((item) => item.id_kt === kichthuoc)[0].ten_kt}
+                </td>
+                <td className="w-[20%] text-center border border-slate-400">
+                  {soluong}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -75,11 +75,11 @@ function LoginManage() {
 
   return (
     <div className="h-[83vh]">
-      <div className="mx-auto translate-y-[50%] w-[400px] p-10 bg-[#F1F5F9] rounded-xl shadow-lg">
-        <p className="text-[35px] font-bold text-center">Login Manage</p>
+      <div className="translate-x-[-50%] translate-y-[-50%] w-[400px] p-10 bg-[#F1F5F9] rounded-xl shadow-lg absolute top-[50%] left-[50%] ]">
+        <p className="text-[35px] font-bold text-center">Đăng nhập quản lí</p>
         <form onSubmit={handleSubmit((data) => setData(data))}>
           <FormLogin control={control} errors={errors} />
-          <button className="w-full opacity-80 text-white font-bold mt-8 py-2 bg-lime-600 rounded-xl hover:opacity-100 duration-300">
+          <button className="w-full opacity-80 text-white font-bold mt-8 py-2 bg-blue-400 rounded-xl hover:opacity-100 duration-300">
             Login
           </button>
         </form>

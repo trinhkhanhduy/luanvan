@@ -7,12 +7,13 @@ import productAPI from "../../../../api/productAPI";
 import imageAPI from "../../../../api/imageAPI";
 import detailProductAPI from "../../../../api/detailProductAPI";
 import csvAPI from "../../../../api/csvAPI";
+import { parse } from "query-string";
 
 const defaultValues = {
   kichthuoc: "KT05",
   loaisanpham: "LSP01",
   tensanpham: "Nike Shoes",
-  thongtinsanpham: "ABC",
+  thongtinsanpham: "Mô tả sản phẩm đang được cập nhật",
   thuonghieu: "TH01",
   giaban: "1500000",
 };
@@ -27,9 +28,9 @@ function AddProduct() {
   const [submittedData, setSubmittedData] = useState({});
   const [detailProduct, setDetailProduct] = useState([]);
   const [addFormData, setAddFormData] = useState({
-    mausac: "",
-    kichthuoc: "",
-  });
+    kichthuoc:"",mausac:""
+  }
+  );
   const [file, setFile] = useState();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -81,7 +82,8 @@ function AddProduct() {
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset(defaultValues);
-      setDetailProduct([])
+      setDetailProduct([]);
+      setListImage([]);
     }
   }, [formState, submittedData, reset]);
 
@@ -158,11 +160,9 @@ function AddProduct() {
     const fieldName = e.target.getAttribute("name");
     const fieldValue = e.target.value;
     const newFormData = { ...addFormData };
-
     newFormData[fieldName] = fieldValue;
     setAddFormData(newFormData);
   };
-
   const handleAddFormSubmit = (e) => {
     e.preventDefault();
     const newDetailProduct = {
@@ -173,6 +173,8 @@ function AddProduct() {
     const newDetailProducts = [...detailProduct, newDetailProduct];
     setDetailProduct(newDetailProducts);
   };
+
+
   const handleOnChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -195,20 +197,23 @@ function AddProduct() {
       });
     }
   };
-  console.log(detailProduct)
+
   return (
     <div>
       <div>
-        <button form="addProduct" className="ml-7 px-10 py-2 mb-5 text-white bg-slate-400 rounded shadow-lg">
+        <button
+          form="addProduct"
+          className="ml-7 px-10 py-2 mb-5 text-white bg-sky-400 rounded shadow-lg"
+        >
           Thêm
         </button>
         <button
-          className="ml-7 mr-7 px-10 py-2 mb-5 text-white bg-slate-400 rounded shadow-lg"
+          className="ml-7 mr-7 px-10 py-2 mb-5 text-white bg-sky-400 rounded shadow-lg"
           onClick={(e) => {
             handleOnSubmit(e);
           }}
         >
-          CSV
+          Thêm CSV
         </button>
         <input
           name="file"
@@ -368,10 +373,10 @@ function AddProduct() {
             {detailProduct?.map(({ mausac, kichthuoc }, idx) => (
               <tr key={idx}>
                 <td className="text-center border border-slate-400">
-                  {mausac}
+                  {color.filter(item => item.id_ms === mausac)[0].ten_ms}
                 </td>
                 <td className="text-center border border-slate-400">
-                  {kichthuoc}
+                {size.filter(item => item.id_kt === kichthuoc)[0].ten_kt}
                 </td>
               </tr>
             ))}

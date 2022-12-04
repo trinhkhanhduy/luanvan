@@ -1,18 +1,17 @@
-import React, {useEffect, useState} from "react";
-import {NavLink} from "react-router-dom";
+import React, { useEffect , useState } from "react";
+import { NavLink } from "react-router-dom";
 import imageAPI from "../../api/imageAPI";
-import {useSnackbar} from "notistack";
+import { useSnackbar } from "notistack";
 
-
-
-
-function Card({data}) {
+function Card({ data }) {
   const [urlImage, setUrlImage] = useState([]);
-  const {enqueueSnackbar} = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
     (async () => {
       try {
         const resUrlImage = await imageAPI.getImage(data.id_sp);
+
         setUrlImage(resUrlImage);
       } catch (error) {
         enqueueSnackbar(error.message, {
@@ -37,36 +36,48 @@ function Card({data}) {
             )}
           </div>
           <div>
-        
             <img
               className="rounded-t-lg"
-              src={urlImage[0]?.hinh_anh_sp.slice(12, urlImage[0]?.hinh_anh_sp.length) }
+              src={urlImage[0]?.hinh_anh_sp.slice(
+                12,
+                urlImage[0]?.hinh_anh_sp.length
+              )}
               alt="san pham"
             />
           </div>
-          <div className="mt-2 h-[60px]">
-            <p className="text-[16px] px-1 font-medium text-center">{data.ten_sp}</p>
+          <div className="mt-2 ">
+            <p className="text-[16px] px-1 font-medium text-center">
+              {data.ten_sp}
+            </p>
           </div>
           <div>
             {!!data?.gia_km ? (
               <>
-                <p className="text-red-600  text-[18px] text-center font-bold">
-                  {new Intl.NumberFormat("vi-VN", {style: "currency", currency: "VND"}).format(
-                    data?.gia_ban_sp - (data?.gia_ban_sp * data?.gia_km) / 100,
+                <p className="text-red-600  text-[18px] text-center font-bold ">
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(
+                    data?.gia_ban_sp - (data?.gia_ban_sp * data?.gia_km) / 100
                   )}
                 </p>
                 <div className="h-[25px] mb-2">
                   <p className="text-slate-700 text-center line-through">
-                    {new Intl.NumberFormat("vi-VN", {style: "currency", currency: "VND"}).format(data?.gia_ban_sp)}
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(data?.gia_ban_sp)}
                   </p>
                 </div>
               </>
             ) : (
               <>
                 <p className="text-red-600 mb-2 text-[18px] text-center font-bold">
-                  {new Intl.NumberFormat("vi-VN", {style: "currency", currency: "VND"}).format(data.gia_ban_sp)}
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(data.gia_ban_sp)}
                 </p>
-         
               </>
             )}
           </div>

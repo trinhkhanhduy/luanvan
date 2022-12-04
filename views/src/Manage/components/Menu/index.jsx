@@ -19,7 +19,7 @@ function Menu(props) {
   const changeTitle = () => {
     let tittle = "";
     if (props.title === "dashboard") tittle = "Thống Kê";
-    if (props.title === "product/add") tittle = "Thêm Sảm Phẩm";
+    if (props.title === "product/add") tittle = "Thêm Sản Phẩm";
     if (props.title === "product/listproducts") tittle = "Danh Sách Sản Phẩm";
     if (props.title === "category/color") tittle = "Màu Sắc";
     if (props.title === "category/size") tittle = "Kích Thước";
@@ -31,6 +31,7 @@ function Menu(props) {
     if (props.title === "staff") tittle = "Nhân Viên";
     if (props.title === "reviews") tittle = "Đánh giá";
     if (props.title === "banner") tittle = "Ảnh bìa";
+    if (props.title === "customer") tittle = "Khách hàng";
 
     return tittle;
   };
@@ -48,7 +49,7 @@ function Menu(props) {
             </div> */}
             <div className="group relative p-2 border rounded-full">
               <FaUserCircle size={20} />
-              <div className="absolute z-10 -right-7 top-9 bg-slate-300 rounded-md hidden group-hover:block">
+              <div className="absolute z-10 -right-7 top-9 bg-slate-300 rounded-md hidden group-hover:block w-[110px] border-2">
                 {/* <Link to="/shop/profile">
                   <p className="hover:bg-slate-100 py-2 px-4 rounded-t-md ">
                     Profile
@@ -59,9 +60,9 @@ function Menu(props) {
                 </Link> */}
                 <p
                   onClick={logoutEmployee}
-                  className="hover:bg-slate-100 py-2 px-4 rounded-md cursor-pointer"
+                  className="hover:bg-slate-100 py-2 px-4 rounded-md cursor-pointer "
                 >
-                  Logout
+                  Đăng xuất
                 </p>
               </div>
             </div>
@@ -71,7 +72,7 @@ function Menu(props) {
             <div>
               <Link to="/manage/login">
                 <p>
-                  <strong>Login</strong>
+                  <strong>Đăng nhập</strong>
                 </p>
               </Link>
             </div>

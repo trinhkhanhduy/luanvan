@@ -18,7 +18,7 @@ const productSlice = createSlice({
   reducers: {
     addListProduct(state, action) {
       state.productlist = action.payload;
-      localStorage.setItem("product", JSON.stringify(action.payload));
+      localStorage.setItem("productlist", JSON.stringify(action.payload));
     },
     addListProductSale(state, action) {
       state.productlistsale = action.payload;

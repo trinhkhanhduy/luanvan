@@ -18,8 +18,8 @@ function Home() {
   const [currentItem2, setCurrentItem2] = useState([]);
   const [pagecount2, setpagecount2] = useState(0);
   const [offset2, setOffer2] = useState(0);
-  const itempage = 8;
-  const itempagedis = 8;
+  const itempage = 10;
+  const itempagedis = 10;
 
   const [newProduct, setNewProduct] = useState([]);
   const [discountProduct, setDiscountProduct] = useState([]);
@@ -54,12 +54,11 @@ function Home() {
     const newOffset = (e.selected * itempagedis) % discountProduct.length;
     setOffer2(newOffset);
   };
-  console.log(open2)
   return (
     <div>
       <Banner  />
       {open ? (
-        <div className="w-[80%] mx-auto mt-20  ">
+        <div className="w-[80%] mx-auto mt-20">
           <div className="w-[50px] h-[30px] card translate-x-[-1000px]  "></div>
           <Button variant="outlined" onClick={handdlechangeOpen}>
             <ArrowCircleRightIcon />
@@ -68,7 +67,7 @@ function Home() {
             Sản phẩm mới
           </p>
 
-          <div className="grid grid-cols-4 gap-10">
+          <div className="grid grid-cols-5 gap-10">
             {currentItem?.map((data, idx) => (
               <Card key={idx} data={data} />
             ))}
@@ -104,7 +103,7 @@ function Home() {
             Sản phẩm khuyến mãi
           </p>
 
-          <div className="grid grid-cols-4 gap-10">
+          <div className="grid grid-cols-5 gap-10">
             {currentItem2?.map((data, idx) => (
               <Card key={idx} data={data} />
             ))}

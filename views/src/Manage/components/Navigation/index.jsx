@@ -9,6 +9,7 @@ import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 import { useSelector } from "react-redux";
 import exportInvoiceAPI from "../../../api/exportInvoiceAPI";
 
+
 function Navigation() {
   const [openMenuProduct, setOpenMenuProduct] = useState(false);
   const [number, setNumber] = useState([]);
@@ -33,17 +34,17 @@ function Navigation() {
   }, []);
 
   return (
-    <div className="h-[100vh] bg-slate-200 overflow-hidden  w-[250px]">
+    <div className=" bg-slate-200 overflow-hidden w-[250px] h-[100%]">
       <div className="py-6">
         <p className="text-[30px] text-center font-bold bg-text-color bg-clip-text ">
-          DShop
+          Quản lý
         </p>
       </div>
       {isLogin ? (
         <div className="grid grid-cols-1 mt-6">
           {role === "CV01" && (
             <Link to="/manage/dashboard">
-              <div className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300">
+              <div className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out ">
                 <AiOutlineBarChart size={30} />
                 <p className="text-[16px]">Thống kê</p>
               </div>
@@ -55,7 +56,7 @@ function Navigation() {
               <div>
                 <div
                   onClick={handleMenuProduct}
-                  className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300"
+                  className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out"
                 >
                   <BsBoxSeam size={30} />
                   <p className="text-[16px]">Sản phẩm</p>
@@ -82,7 +83,7 @@ function Navigation() {
                 <>
                   <div
                     onClick={handleCategory}
-                    className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300"
+                    className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out"
                   >
                     <TiThMenuOutline size={30} />
                     <p className="text-[16px]">Danh mục</p>
@@ -119,7 +120,7 @@ function Navigation() {
 
               {(role === "CV01" || role === "CV03") && (
                 <Link to="/manage/bill/import_invoice">
-                  <div className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300">
+                  <div className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out">
                     <AiOutlineAppstoreAdd size={30} />
                     <p className="text-[16px]">Nhập kho</p>
                   </div>
@@ -130,7 +131,7 @@ function Navigation() {
 
           {(role === "CV01" || role === "CV02") && (
             <Link to="/manage/bill/export_invoice">
-              <div className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300">
+              <div className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out">
                 <RiBillLine size={30} />
                 <p className="text-[16px]">
                   Đơn hàng{" "}
@@ -143,7 +144,7 @@ function Navigation() {
           )}
           {role === "CV01" && (
             <Link to="/manage/delivery">
-              <div className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300">
+              <div className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out">
                 <AiOutlineBarChart size={30} />
                 <p className="text-[16px]">Trạng thái đơn</p>
               </div>
@@ -151,7 +152,7 @@ function Navigation() {
           )}
           {role === "CV01" && (
             <Link to="/manage/banner">
-              <div className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300">
+              <div className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out">
                 <PhotoCameraBackIcon size={30} />
                 <p className="text-[16px]">Ảnh bìa</p>
               </div>
@@ -160,7 +161,7 @@ function Navigation() {
 
           {role === "CV01" && (
             <Link to="/manage/staff">
-              <div className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300">
+              <div className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out">
                 <BsPeople size={30} />
                 <p className="text-[16px]">Nhân viên</p>
               </div>
@@ -169,7 +170,7 @@ function Navigation() {
 
           {role === "CV01" && (
             <Link to="/manage/customer">
-              <div className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300">
+              <div className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out">
                 <BsPeople size={30} />
                 <p className="text-[16px]">Khách hàng</p>
               </div>
@@ -178,7 +179,7 @@ function Navigation() {
 
           {role === "CV01" && (
             <Link to="/manage/reviews">
-              <div className="flex gap-2 items-center px-6 py-3 border-l-4 hover:bg-white hover:border-[#000] cursor-pointer duration-300">
+              <div className="flex gap-2 items-center px-6 py-3  cursor-pointer text-sm font-medium text-gray-700  hover:bg-teal-500 hover:text-white hover:text-base rounded-md transition duration-150 ease-in-out">
                 <MdOutlineReviews size={30} />
                 <p className="text-[16px]">Đánh giá</p>
               </div>

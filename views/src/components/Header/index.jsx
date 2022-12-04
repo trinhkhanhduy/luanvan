@@ -27,7 +27,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import CardItem from "../CardItem";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import "./index.css";
-
+import logo from "../../assets/logo.png";
 const defaulValue = {
   search: "",
 };
@@ -44,8 +44,8 @@ function Header() {
 
   const { register, handleSubmit } = useForm(defaulValue);
   const { enqueueSnackbar } = useSnackbar();
-  const location = useLocation();
-  const title = location.pathname;
+ 
+
   const logoutUser = () => {
     dispatch(removeAllCart());
     dispatch(removeAllAddress());
@@ -87,7 +87,7 @@ function Header() {
   const startvoice = () => {
     var SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
-    var recognition = new SpeechRecognition();
+    const recognition = new SpeechRecognition();
     recognition.start();
     enqueueSnackbar("Đang lắng nghe!", {
       variant: "success",
@@ -143,9 +143,11 @@ function Header() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className="text-[35px] font-[900] bg-text-color bg-clip-text w-[100%] text-center"> DShop</div>
+      <div className="text-[35px] font-[900] bg-text-color bg-clip-text w-[100%] h-[40%] text-center">
+        <img className="w-[70%] h-[100%] ml-9" src={logo} alt="logo" />
+      </div>
 
-      <List sx={{ mt: 10 }}>
+      <List sx={{ mt: 2 }}>
         {band.map((item, index) => (
           <ListItem key={index} disablePadding>
             <div className="w-[100%]">
@@ -176,33 +178,31 @@ function Header() {
 
   return (
     <div className="">
-      <div className="flex justify-between items-center w-[80%] font-bold m-auto py-5">
-        <div>
+      <div className="flex justify-between items-center w-[80%] font-bold m-auto pt-5">
+        <div className=" w-[10%] h-[10%]">
           <span className="text-[35px] font-[900] bg-text-color bg-clip-text">
-            <Link to="/">DShop</Link>
+            <Link to="/">
+              <img className="w-[100%] h-[80%]" src={logo} alt="logo"></img>
+            </Link>
           </span>
         </div>
 
         <div className="flex gap-8">
-          {title === "/shop/products" || title === "/shop/sale" ? (
-            ""
-          ) : (
-            <div>
-              <Button
-                sx={{ height: "100%" }}
-                onClick={toggleDrawer("left", true)}
-              >
-                <FormatAlignLeftIcon sx={{ color: "black" }} />
-              </Button>
-              <Drawer
-                anchor={"left"}
-                open={state["left"]}
-                onClose={toggleDrawer("left", false)}
-              >
-                {list("left")}
-              </Drawer>
-            </div>
-          )}
+          <div>
+            <Button
+              sx={{ height: "100%" }}
+              onClick={toggleDrawer("left", true)}
+            >
+              <FormatAlignLeftIcon sx={{ color: "black" }} />
+            </Button>
+            <Drawer
+              anchor={"left"}
+              open={state["left"]}
+              onClose={toggleDrawer("left", false)}
+            >
+              {list("left")}
+            </Drawer>
+          </div>
 
           <Link to="/shop">
             <div className="btn from-center ">Trang chủ</div>

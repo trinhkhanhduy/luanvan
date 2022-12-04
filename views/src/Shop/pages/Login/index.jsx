@@ -91,7 +91,7 @@ function Login() {
               Quên mật khẩu ?
             </p>{" "}
           </Link>
-          <button className="w-full opacity-80 text-white font-bold mt-8 py-2 bg-lime-600 rounded-xl hover:opacity-100 duration-300">
+          <button className="w-full opacity-80 text-white font-bold mt-8 py-2 bg-blue-400 rounded-xl hover:opacity-100 duration-300">
             ĐĂNG NHẬP
           </button>
           <p className="text-center mt-4">

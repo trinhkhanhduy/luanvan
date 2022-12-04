@@ -109,7 +109,7 @@ function Register() {
       <form onSubmit={handleSubmit((data) => getData(data))}>
         <FormRegister control={control} error={errors} watch={watch} />
 
-        <button className="w-full text-white font-bold mt-10 py-2 bg-lime-600 rounded-xl">ĐĂNG KÝ</button>
+        <button className="w-full text-white font-bold mt-10 py-2 bg-blue-400 rounded-xl">ĐĂNG KÝ</button>
         <p className="text-center mt-4">
           Đã có tài khoản?
           <Link className="text-sky-500" to="/shop/login">
