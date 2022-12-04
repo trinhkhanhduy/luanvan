@@ -119,8 +119,9 @@ Filter.sortSizeBrandSale = (key,brand, result) => {
 
 
 Filter.search = (key, result) => {
+  console.log(key)
   mysql.query(
-    `SELECT * FROM san_pham WHERE ten_sp LIKE '%${key}%' ORDER BY SUBSTRING(id_sp,4)*1 ASC`,
+    `SELECT san_pham.*, khuyen_mai.gia_km FROM san_pham LEFT JOIN khuyen_mai ON san_pham.id_sp = khuyen_mai.id_sp WHERE san_pham.ten_sp LIKE '%${key}%' ORDER BY SUBSTRING(san_pham.id_sp,4)*1;`,
     (err, res) => {
       if (err) {
         console.log('ERROR: ', err)

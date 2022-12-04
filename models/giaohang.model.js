@@ -104,7 +104,7 @@ Deliver.getInvoiceStatus = (idnv, status, result) => {
 
 Deliver.getAllInvoice = (result) => {
   mysql.query(
-    "SELECT * FROM giao_hang INNER JOIN hoa_don_xuat ON giao_hang.id_hdx = hoa_don_xuat.id_hdx INNER JOIN nhan_vien ON giao_hang.id_nv = nhan_vien.id_nv",
+    "SELECT * FROM giao_hang INNER JOIN nhan_vien ON nhan_vien.id_nv = giao_hang.id_nv INNER JOIN hoa_don_xuat ON hoa_don_xuat.id_hdx = giao_hang.id_hdx INNER JOIN chi_tiet_hdx ON hoa_don_xuat.id_hdx = chi_tiet_hdx.id_hdx INNER JOIN san_pham ON san_pham.id_sp = chi_tiet_hdx.id_sp WHERE nhan_vien.id_nv=giao_hang.id_nv",
     (err, res) => {
       if (err) {
         console.log("ERROR: ", err);
@@ -112,14 +112,14 @@ Deliver.getAllInvoice = (result) => {
         return;
       }
       console.log("Create new deliver");
-      // console.log("khanhduy____________",res)
       result(null, res);
     },
   );
 };
 Deliver.getPriceShip = (data,result) => {
+
   mysql.query(
-    `SELECT * FROM giao_hang,nhan_vien,hoa_don_xuat where '${data}' = giao_hang.id_nv and nhan_vien.id_nv ='${data}' and hoa_don_xuat.id_hdx=giao_hang.id_hdx `,
+    `SELECT * FROM giao_hang INNER JOIN nhan_vien ON nhan_vien.id_nv = giao_hang.id_nv INNER JOIN hoa_don_xuat ON hoa_don_xuat.id_hdx = giao_hang.id_hdx INNER JOIN chi_tiet_hdx ON hoa_don_xuat.id_hdx = chi_tiet_hdx.id_hdx INNER JOIN san_pham ON san_pham.id_sp = chi_tiet_hdx.id_sp WHERE nhan_vien.id_nv='${data}'; `,
     (err, res) => {
       if (err) {
         console.log("ERROR: ", err);
@@ -127,7 +127,6 @@ Deliver.getPriceShip = (data,result) => {
         return;
       }
       console.log("Create new deliver");
-      console.log("khanhduy____________",res)
       result(null, res);
     },
   );
