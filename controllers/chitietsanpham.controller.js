@@ -44,23 +44,32 @@ module.exports = {
   },
 
   getListColor: (req, res) => {
-    DetailProduct.getListColor(req.params.idsp, req.params.idms, (err, data) => {
-      if (err) {
-        res.status(500).send({
-          message: err.message,
-        });
-      } else res.status(200).send(data);
-    });
+    DetailProduct.getListColor(
+      req.params.idsp,
+      req.params.idms,
+      (err, data) => {
+        if (err) {
+          res.status(500).send({
+            message: err.message,
+          });
+        } else res.status(200).send(data);
+      }
+    );
   },
 
   getNumberProduct: (req, res) => {
-    DetailProduct.getNumberProduct(req.params.idsp, req.params.idkt, req.params.idms, (err, data) => {
-      if (err) {
-        res.status(500).send({
-          message: err.message,
-        });
-      } else res.status(200).send(data);
-    });
+    DetailProduct.getNumberProduct(
+      req.params.idsp,
+      req.params.idkt,
+      req.params.idms,
+      (err, data) => {
+        if (err) {
+          res.status(500).send({
+            message: err.message,
+          });
+        } else res.status(200).send(data);
+      }
+    );
   },
 
   getProductBuyNow: (req, res) => {
@@ -122,6 +131,17 @@ module.exports = {
           message: err.message,
         });
       } else res.status(200).send(data);
+    });
+  },
+  removeUpdate: () => {
+    DetailProduct.removeUpdate(req.params.idsp, (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: err.message,
+        });
+      } else {
+        res.status(200).send(data);
+      }
     });
   },
 };
