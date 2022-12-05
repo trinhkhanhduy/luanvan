@@ -49,6 +49,10 @@ const detailProductAPI = {
   getNumberOneProduct(params) {
     const API_URL = "/api/detail_product/number_product";
     return axiosClient.get(API_URL, {params});
+  },
+  removeUpdate(params){
+    const API_URL = `/api/detail_product/removeUpdate/${params}`;
+    return axiosClient.get(API_URL);
   }
 };
 

@@ -79,6 +79,7 @@ function InfoProduct() {
             ten_ms: slSize[0]?.ten_ms,
             ten_kt: slSize[0]?.ten_kt,
             so_luong_xuat: JSON.parse(soluong),
+            soluong:numberProduct,
             gia_ban: product[0]?.gia_ban_sp,
             hinh_anh: image[0]?.hinh_anh_sp.slice(
               12,
@@ -125,6 +126,7 @@ function InfoProduct() {
               id_ms: slSize[0].id_ms,
               id_kt: slSize[0].id_kt,
               ten_ms: slSize[0].ten_ms,
+              soluong:numberProduct,
               ten_kt: slSize[0].ten_kt,
               giam_gia: product[0].gia_km,
               gia_ban: product[0].gia_ban_sp,

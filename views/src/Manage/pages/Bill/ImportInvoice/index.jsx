@@ -48,7 +48,7 @@ function ImportInvoice() {
   const { enqueueSnackbar } = useSnackbar();
 
   const idnv = useSelector((state) => state.employee?.current[0]?.id_nv);
-
+  console.log(size)
   useEffect(() => {
     (async () => {
       try {
@@ -57,7 +57,7 @@ function ImportInvoice() {
         setDataProduct(res_products);
         const res_importInvoice =
           await importInvoiceAPI.getListImportInvoiceAPI();
-        console.log(res_importInvoice);
+    
         setImportInvoiceList(res_importInvoice);
       } catch (error) {
         enqueueSnackbar(error.message, {
@@ -76,6 +76,7 @@ function ImportInvoice() {
 
   const getColorProduct = async (idms) => {
     const resSize = await detailProductAPI.getListColor(nameProduct, idms);
+
     setSizeList(resSize);
     setColor(idms);
   };
@@ -90,7 +91,6 @@ function ImportInvoice() {
       kichthuoc: size,
       soluong: numberProduct,
     };
-
     const newImportInvoice = [...importInvoiceData, data];
     setImportInvoiceData(newImportInvoice);
   };
@@ -193,6 +193,7 @@ function ImportInvoice() {
       nhanviennhap: ten_nv,
     })
   );
+ 
 
   return (
     <div className="px-[20px]">

@@ -45,7 +45,7 @@ function EditProduct() {
   const typeProduct = useSelector(
     (state) => state?.typeProduct?.typeProductlist
   );
-
+    console.log(detailProduct)
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -125,6 +125,7 @@ function EditProduct() {
     const formData = new FormData();
     try {
       await productAPI.updateProduct(params.idsp, dataProduct(data));
+      await detailProductAPI.removeUpdate(params.idsp)
       await detailProductAPI.updateNumberProduct(detailProduct);
       enqueueSnackbar("Sửa sản phẩm thành công", {
         variant: "success",
@@ -397,7 +398,7 @@ function EditProduct() {
           <button className="px-4 bg-slate-400 rounded-lg">Thêm</button>
         </div>
       </form>
-      <div className="absolute top-[69%] w-[50%] left-[15%] ">
+      <div className="absolute top-[75%] w-[50%] left-[18%] ">
         <table className="w-[60%]">
           <thead>
             <tr>

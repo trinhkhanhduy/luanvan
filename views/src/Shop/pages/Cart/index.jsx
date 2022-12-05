@@ -8,6 +8,8 @@ import { removeFromCart } from "../../../redux/cartSlide";
 import { removeAllCart } from "../../../redux/cartSlide";
 import { addtoListBuy } from "../../../redux/listbuySlice";
 import { setQuantity } from "../../../redux/cartSlide";
+import { IconButton } from "@mui/material";
+import { border } from "@mui/system";
 function Cart() {
   const dataCart = useSelector((state) => state?.cart?.cartItem);
   const id_dc = useSelector((state) => state?.address?.addresslist);
@@ -82,6 +84,7 @@ function Cart() {
             gia_ban,
             giam_gia,
             hinh_anh,
+            soluong,
           },
           idx
         ) => (
@@ -120,17 +123,27 @@ function Cart() {
               <p className="px-2 w-[5%] text-[18px]">x{so_luong_xuat}</p>
             </div>
             <div className="flex relative gap-1 ml-3 ">
-              <AddIcon
+              <IconButton
                 onClick={() => plusNumber(id_sp, so_luong_xuat + 1)}
-                className="border-2 hover:bg-slate-400"
-              ></AddIcon>
-
-              <RemoveIcon
+                disabled={so_luong_xuat > soluong ? true : false}
+                sx={{ color: "red" }}
+              >
+                <AddIcon
+                  className={`border-2 ${
+                    so_luong_xuat > soluong
+                      ? "border-gray-300"
+                      : "border-red-500"
+                  } hover:bg-slate-400`}
+                ></AddIcon>
+              </IconButton>
+              <IconButton
+                sx={{ color: "red" }}
                 onClick={() =>
                   deleteNumber(id_sp, so_luong_xuat - 1, id_ms, id_kt)
                 }
-                className="border-2 hover:bg-slate-400"
-              ></RemoveIcon>
+              >
+                <RemoveIcon className="border-2 border-red-500 hover:bg-slate-400"></RemoveIcon>
+              </IconButton>
             </div>
 
             <div className="absolute left-[145px] top-[90px] text-slate-500 text-[16px] flex gap-5">
