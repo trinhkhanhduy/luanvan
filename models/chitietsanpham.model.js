@@ -17,6 +17,17 @@ DetailProduct.createDetailProduct = (newDetailProduct, result) => {
     result(null, res);
   });
 };
+DetailProduct.removeUpdate = (newDetailProduct, result) => {
+  mysql.query("INSERT INTO chi_tiet_sp SET ?", newDetailProduct, (err, res) => {
+    if (err) {
+      console.log("ERROR: ", err);
+      result(err, null);
+      return;
+    }
+    console.log("Tạo chi tiết sản phẩm thành công");
+    result(null, res);
+  });
+};
 
 DetailProduct.getList = (idsp, result) => {
   mysql.query(
@@ -120,8 +131,9 @@ DetailProduct.addNumberProduct = (newInfo, result) => {
 };
 
 DetailProduct.updateNumberProduct = (newInfo, result) => {
+  console.log(newInfo)
   mysql.query(
-    `UPDATE chi_tiet_sp SET so_luong_sp='${newInfo.soluong}',id_ms='${newInfo.mausac}',id_kt='${newInfo.kichthuoc}' WHERE id_sp='${newInfo.idsp}'`,
+    `UPDATE chi_tiet_sp SET so_luong_sp='${newInfo.soluong}' WHERE id_sp='${newInfo.idsp}' and id_ms='${newInfo.mausac}' and id_kt='${newInfo.kichthuoc}';`,
     (err, res) => {
       if (err) {
         console.log("ERROR: ", err);
