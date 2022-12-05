@@ -25,4 +25,7 @@ module.exports = (app) => {
   app.get("/api/detail_product/number_product/:idsp/:idms/:idkt", detailProduct.getNumberProduct);
 
   app.get("/api/detail_product/number_product", detailProduct.getNumberOneProduct);
+  app.get("/api/detail_product/removeUpdate/:idsp", detailProduct.removeUpdate);
+
+ 
 };
