@@ -23,6 +23,22 @@ module.exports = {
     });
   },
 
+  updateDetailproduct: (req, res) => {
+    const data = req.body
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!",
+      });
+    }
+    DetailProduct.updateDetailproduct(data, (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: err.message,
+        });
+      } else res.status(200).send(data);
+    });
+  },
+
   getList: (req, res) => {
     DetailProduct.getList(req.params.idsp, (err, data) => {
       if (err) {
@@ -133,7 +149,7 @@ module.exports = {
       } else res.status(200).send(data);
     });
   },
-  removeUpdate: () => {
+  removeUpdate: (req,res) => {
     DetailProduct.removeUpdate(req.params.idsp, (err, data) => {
       if (err) {
         res.status(500).send({
