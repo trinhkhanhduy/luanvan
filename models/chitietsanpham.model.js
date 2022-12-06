@@ -17,16 +17,34 @@ DetailProduct.createDetailProduct = (newDetailProduct, result) => {
     result(null, res);
   });
 };
-DetailProduct.removeUpdate = (newDetailProduct, result) => {
-  mysql.query("INSERT INTO chi_tiet_sp SET ?", newDetailProduct, (err, res) => {
-    if (err) {
-      console.log("ERROR: ", err);
-      result(err, null);
-      return;
+DetailProduct.updateDetailproduct = (data, result) => {
+  mysql.query(
+    `INSERT INTO chi_tiet_sp(so_luong_sp, id_sp, id_ms, id_kt) VALUES ('${data.soluong}','${data.idsp}','${data.idms}','${data.idkt}');`,
+    (err, res) => {
+      if (err) {
+        console.log("ERROR: ", err);
+        result(err, null);
+        return;
+      }
+      console.log("Tạo chi tiết sản phẩm thành công");
+      result(null, res);
     }
-    console.log("Tạo chi tiết sản phẩm thành công");
-    result(null, res);
-  });
+  );
+};
+
+DetailProduct.removeUpdate = (idsp, result) => {
+  mysql.query(
+    `DELETE FROM chi_tiet_sp WHERE chi_tiet_sp.id_sp= '${idsp}'`,
+    (err, res) => {
+      if (err) {
+        console.log("ERROR: ", err);
+        result(err, null);
+        return;
+      }
+      console.log("Tạo chi tiết sản phẩm thành công");
+      result(null, res);
+    }
+  );
 };
 
 DetailProduct.getList = (idsp, result) => {
@@ -40,7 +58,7 @@ DetailProduct.getList = (idsp, result) => {
       }
       console.log("Lấy danh sách chi tiết sản phẩm thành công");
       result(null, res);
-    },
+    }
   );
 };
 
@@ -55,7 +73,7 @@ DetailProduct.getAllNumber = (result) => {
       }
       console.log("Lấy danh sách chi tiết sản phẩm thành công");
       result(null, res);
-    },
+    }
   );
 };
 
@@ -70,7 +88,7 @@ DetailProduct.getListColor = (idsp, idms, result) => {
       }
       console.log("Lấy danh sách chi tiết sản phẩm thành công");
       result(null, res);
-    },
+    }
   );
 };
 
@@ -84,7 +102,7 @@ DetailProduct.getNumberProduct = (idsp, idkt, idms, result) => {
         return;
       }
       result(null, res);
-    },
+    }
   );
 };
 
@@ -98,7 +116,7 @@ DetailProduct.getProductBuyNow = (newInfo, result) => {
         return;
       }
       result(null, res);
-    },
+    }
   );
 };
 
@@ -112,7 +130,7 @@ DetailProduct.removeNumberProduct = (newInfo, result) => {
         return;
       }
       result(null, res);
-    },
+    }
   );
 };
 
@@ -126,14 +144,14 @@ DetailProduct.addNumberProduct = (newInfo, result) => {
         return;
       }
       result(null, res);
-    },
+    }
   );
 };
 
 DetailProduct.updateNumberProduct = (newInfo, result) => {
-  console.log(newInfo)
+  console.log(newInfo);
   mysql.query(
-    `UPDATE chi_tiet_sp SET so_luong_sp='${newInfo.soluong}' WHERE id_sp='${newInfo.idsp}' and id_ms='${newInfo.mausac}' and id_kt='${newInfo.kichthuoc}';`,
+    `UPDATE chi_tiet_sp SET so_luong_sp=(so_luong_sp+${newInfo.soluong}) WHERE chi_tiet_sp.id_sp ='${newInfo.idsp}' AND chi_tiet_sp.id_ms ='${newInfo.mausac}' AND chi_tiet_sp.id_kt ='${newInfo.kichthuoc}';`,
     (err, res) => {
       if (err) {
         console.log("ERROR: ", err);
@@ -141,7 +159,7 @@ DetailProduct.updateNumberProduct = (newInfo, result) => {
         return;
       }
       result(null, res);
-    },
+    }
   );
 };
 
@@ -155,7 +173,7 @@ DetailProduct.getNumberOneProduct = (product, result) => {
         return;
       }
       result(null, res);
-    },
+    }
   );
 };
 
