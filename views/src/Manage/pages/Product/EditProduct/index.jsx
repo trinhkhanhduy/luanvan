@@ -366,7 +366,7 @@ function EditProduct() {
       </form>
 
       <form onSubmit={handleAddFormSubmit}>
-        <div className="flex justify-between gap-6 w-[40%] mt-6 mb-10 px-7  absolute bottom-[22%] left-[45%]">
+        <div className="flex justify-between gap-6 w-[40%] mt-6 mb-10 px-7  absolute top-[47%] left-[35%]">
           <div className="w-[30%]">
             <select
               name="mausac"
@@ -409,8 +409,8 @@ function EditProduct() {
           <button className="px-4 bg-slate-400 rounded-lg">Thêm</button>
         </div>
       </form>
-      <div className="absolute top-[75%] w-[50%] left-[18%] ">
-        <table className="w-[60%]">
+      <div className="absolute top-[50%] w-[20%] left-[15%] ">
+        <table>
           <thead>
             <tr>
               <th className="h-8 border border-slate-400">Màu Sắc</th>
