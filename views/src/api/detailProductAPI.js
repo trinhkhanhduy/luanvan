@@ -52,8 +52,13 @@ const detailProductAPI = {
   },
   removeUpdate(params){
     const API_URL = `/api/detail_product/removeUpdate/${params}`;
-    return axiosClient.get(API_URL);
+    return axiosClient.put(API_URL);
+  },
+  updateDetailproduct(data){
+    const API_URL = "/api/detail_product/update";
+    return axiosClient.post(API_URL, data);
   }
+
 };
 
 export default detailProductAPI;
