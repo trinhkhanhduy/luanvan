@@ -25,7 +25,7 @@ function EditProduct() {
   const [imageUrl, setImageUrl] = useState([]);
   const [listImage, setListImage] = useState([]);
   const [addImage, setAddImage] = useState([]);
-  const [dataAll, setDataAll] = useState([]);
+  // const [dataAll, setDataAll] = useState([]);
   const [detailProduct, setDetailProduct] = useState([]);
   const [addFormData, setAddFormData] = useState({
     idsp: "",
@@ -45,7 +45,7 @@ function EditProduct() {
   const typeProduct = useSelector(
     (state) => state?.typeProduct?.typeProductlist
   );
-    console.log(detailProduct)
+
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -120,13 +120,24 @@ function EditProduct() {
       thuonghieu: data.thuonghieu,
     };
   };
-
+  console.log(detailProduct);
   const setData = async (data) => {
     const formData = new FormData();
     try {
       await productAPI.updateProduct(params.idsp, dataProduct(data));
-      await detailProductAPI.removeUpdate(params.idsp)
-      await detailProductAPI.updateNumberProduct(detailProduct);
+      await detailProductAPI.removeUpdate(params.idsp);
+
+      if (detailProduct) {
+        for (let i = 0; i < detailProduct.length; i++) {
+          await detailProductAPI.updateDetailproduct({
+            idsp: detailProduct[i]?.idsp,
+            idkt: detailProduct[i]?.kichthuoc,
+            idms: detailProduct[i]?.mausac,
+            soluong: detailProduct[i].soluong,
+          });
+        }
+      }
+
       enqueueSnackbar("Sửa sản phẩm thành công", {
         variant: "success",
         autoHideDuration: 2000,

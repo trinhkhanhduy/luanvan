@@ -44,20 +44,20 @@ function ImportInvoice() {
   const [count, setCount] = useState(0);
   const [check, setCheck] = useState(false);
   const [dataProduct, setDataProduct] = useState([]);
-  const [file, setFile] = useState();
+  // const [file, setFile] = useState();
   const { enqueueSnackbar } = useSnackbar();
 
   const idnv = useSelector((state) => state.employee?.current[0]?.id_nv);
-  console.log(size)
+ 
   useEffect(() => {
     (async () => {
       try {
         const res_products = await productAPI.getProductListManage();
-        
+
         setDataProduct(res_products);
         const res_importInvoice =
           await importInvoiceAPI.getListImportInvoiceAPI();
-    
+
         setImportInvoiceList(res_importInvoice);
       } catch (error) {
         enqueueSnackbar(error.message, {
@@ -76,11 +76,15 @@ function ImportInvoice() {
 
   const getColorProduct = async (idms) => {
     const resSize = await detailProductAPI.getListColor(nameProduct, idms);
-
     setSizeList(resSize);
     setColor(idms);
   };
-
+  const onchangeSize = (kt) => {
+    
+     setSize(kt);
+    
+  };
+  console.log(size);
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -193,7 +197,6 @@ function ImportInvoice() {
       nhanviennhap: ten_nv,
     })
   );
- 
 
   return (
     <div className="px-[20px]">
@@ -252,7 +255,7 @@ function ImportInvoice() {
                     ))}
                   </select>
                   <select
-                    onChange={(e) => setSize(e.target.value)}
+                    onClick={(e) => onchangeSize(e.target.value)}
                     className="block mb-4 p-2 px-4 w-full border rounded-md"
                   >
                     <option value="">Chọn kích thước</option>
