@@ -30,8 +30,8 @@ const cartSlice = createSlice({
       }
     },
     setQuantity(state, action) {
-      const { id_sp, so_luong_xuat } = action.payload;
-      const index = state.cartItem.findIndex((x) => x.id_sp === id_sp);
+      const { id_sp, so_luong_xuat,id_ms } = action.payload;
+      const index = state.cartItem.findIndex((x) => x.id_sp === id_sp && x.id_ms === id_ms);
       if (index >= 0) {
         state.cartItem[index].so_luong_xuat = so_luong_xuat;
         const a = JSON.parse(localStorage.getItem("cart"));

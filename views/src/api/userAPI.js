@@ -35,6 +35,19 @@ const userAPI = {
     const API_URL = `/api/update_user/status=${status}/idkh=${idkh}`;
     return axiosClient.put(API_URL);
   },
+  getMember(id_kh) {
+    const API_URL = `/api/get_user/detail/id_kh=${id_kh}`;
+    return axiosClient.get(API_URL);
+  },
+
+  getSumMoneyUser(id_kh) {
+    const API_URL = `/api/get_user/money/id_kh=${id_kh}`;
+    return axiosClient.get(API_URL);
+  },
+  updateMember(idkh, type) {
+    const API_URL = `/api/update_user/money/type=${type}/idkh=${idkh}`;
+    return axiosClient.put(API_URL);
+  },
 };
 
 export default userAPI;

@@ -20,6 +20,7 @@ import { address, removeOneAddress } from "../../../redux/addressSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import payOnlineAPI from "../../../api/payOnlineAPI";
 import detailProductAPI from "../../../api/detailProductAPI";
+import userAPI from "../../../api/userAPI";
 
 const styleAddress = {
   position: "absolute",
@@ -53,7 +54,7 @@ function BuyNow() {
   const [provinceName, setProvinceName] = useState("");
   const [districtName, setDistrictName] = useState("");
   const [wardName, setWardName] = useState("");
-
+  const [money, setMoney] = useState("");
   const [openAddress, setOpenAddress] = useState(false);
   const handleOpenAddress = () => setOpenAddress(true);
   const handleCloseAddress = () => setOpenAddress(false);
@@ -62,9 +63,7 @@ function BuyNow() {
   const handleOpenFormAddress = () => setOpenFormAddress(true);
   const handleCloseFormAddress = () => setOpenFormAddress(false);
 
-  const id_kh = useSelector(
-    (state) => state?.user?.current.dataUser[0]?.id_kh
-  );
+  const id_kh = useSelector((state) => state?.user?.current.dataUser[0]?.id_kh);
   const dia_chi = useSelector((state) => state?.address?.addresslist[0]);
   const listBuy = useSelector((state) => state?.listbuy?.list);
   const addressChecked = useSelector((state) => state.address?.addresslist);
@@ -77,20 +76,27 @@ function BuyNow() {
 
   const { handleSubmit: handleSubmitAddress, control: controlAddress } =
     useForm();
-
+  const typeMember = sumPrice + money >= 10000000 && sumPrice + money < 30000000
+  ? 1
+  : sumPrice + money >= 30000000 && sumPrice + money < 50000000
+  ? 2
+  : sumPrice + money >= 50000000
+  ? 3
+  : 0;
   useEffect(() => {
     (async () => {
       let a = 0;
       if (listBuy.length !== 0) {
         for (let i = 0; i < listBuy.length; i++) {
-          a =
-            a +
+          a +=
             listBuy[i]?.so_luong_xuat *
-              (listBuy[i]?.gia_ban -
-                (listBuy[i]?.gia_ban * listBuy[i]?.giam_gia) / 100);
+            (listBuy[i]?.gia_ban -
+              (listBuy[i]?.gia_ban * listBuy[i]?.giam_gia) / 100);
         }
         setSumPrice(a);
       }
+      const totalMoney = await userAPI.getSumMoneyUser(id_kh);
+      setMoney(totalMoney[0]?.tongtien);
     })();
   }, [params, listBuy, count]);
 
@@ -113,7 +119,9 @@ function BuyNow() {
     });
 
     await detailProductAPI.removeProduct(listBuy);
+     
 
+    await userAPI.updateMember(id_kh, typeMember);
     if (type === "cart") {
       dispatch(removeAllCart());
     }
@@ -259,8 +267,6 @@ function BuyNow() {
 
   const submitAddAddress = async (data) => {
     try {
-
-
       if (provinceName && districtName && wardName) {
         await addressAPI.createAddress({
           tenkh: data.name,

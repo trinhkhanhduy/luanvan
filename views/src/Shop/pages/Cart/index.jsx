@@ -50,13 +50,13 @@ function Cart() {
   };
   const deleteNumber = (id, soluong, id_ms, id_kt) => {
     if (soluong > 0) {
-      dispatch(setQuantity({ id_sp: id, so_luong_xuat: soluong }));
+      dispatch(setQuantity({ id_sp: id, so_luong_xuat: soluong,id_ms: id_ms }));
     } else {
       deleteCart(id, id_ms, id_kt);
     }
   };
-  const plusNumber = (id, soluong) => {
-    dispatch(setQuantity({ id_sp: id, so_luong_xuat: soluong }));
+  const plusNumber = (id, soluong, id_ms) => {
+    dispatch(setQuantity({ id_sp: id, so_luong_xuat: soluong, id_ms: id_ms }));
   };
   const payCart = async () => {
     try {
@@ -124,13 +124,13 @@ function Cart() {
             </div>
             <div className="flex relative gap-1 ml-3 ">
               <IconButton
-                onClick={() => plusNumber(id_sp, so_luong_xuat + 1)}
-                disabled={so_luong_xuat > soluong ? true : false}
+                onClick={() => plusNumber(id_sp, so_luong_xuat + 1, id_ms)}
+                disabled={so_luong_xuat >= soluong ? true : false}
                 sx={{ color: "red" }}
               >
                 <AddIcon
                   className={`border-2 ${
-                    so_luong_xuat > soluong
+                    so_luong_xuat >= soluong
                       ? "border-gray-300"
                       : "border-red-500"
                   } hover:bg-slate-400`}

@@ -25,13 +25,13 @@ function EditProduct() {
   const [imageUrl, setImageUrl] = useState([]);
   const [listImage, setListImage] = useState([]);
   const [addImage, setAddImage] = useState([]);
-  // const [dataAll, setDataAll] = useState([]);
+  // const [dataDetail, setdataDetail] = useState([]);
   const [detailProduct, setDetailProduct] = useState([]);
   const [addFormData, setAddFormData] = useState({
     idsp: "",
-    mausac: "",
-    kichthuoc: "",
-    soluong: "",
+    id_ms: "",
+    id_kt: "",
+    so_luong_sp: "",
   });
   const [count, setCount] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
@@ -86,9 +86,13 @@ function EditProduct() {
   useEffect(() => {
     (async () => {
       try {
+        document.cookie = "username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+        console.log("a",document.cookie);
         const resProduct = await productAPI.getProduct(params.idsp);
+        const resDetailProduct = await productAPI.getDetailProduct(params.idsp);
         const resImage = await imageAPI.getImage(params.idsp);
         setListImage(resImage);
+        setDetailProduct(resDetailProduct);
         reset({
           tensanpham: resProduct[0].ten_sp,
           thongtinsanpham: resProduct[0].thong_tin_sp,
@@ -120,7 +124,7 @@ function EditProduct() {
       thuonghieu: data.thuonghieu,
     };
   };
-  console.log(detailProduct);
+ 
   const setData = async (data) => {
     const formData = new FormData();
     try {
@@ -128,12 +132,13 @@ function EditProduct() {
       await detailProductAPI.removeUpdate(params.idsp);
 
       if (detailProduct) {
+        console.log(detailProduct);
         for (let i = 0; i < detailProduct.length; i++) {
           await detailProductAPI.updateDetailproduct({
-            idsp: detailProduct[i]?.idsp,
-            idkt: detailProduct[i]?.kichthuoc,
-            idms: detailProduct[i]?.mausac,
-            soluong: detailProduct[i].soluong,
+            idsp: detailProduct[i]?.id_sp,
+            idkt: detailProduct[i]?.id_kt,
+            idms: detailProduct[i]?.id_ms,
+            soluong: detailProduct[i]?.so_luong_sp,
           });
         }
       }
@@ -214,7 +219,6 @@ function EditProduct() {
     e.preventDefault();
     const fieldName = e.target.getAttribute("name");
     const fieldValue = e.target.value;
-
     const newFormData = { ...addFormData };
 
     newFormData[fieldName] = fieldValue;
@@ -224,15 +228,16 @@ function EditProduct() {
   const handleAddFormSubmit = (e) => {
     e.preventDefault();
     const newDetailProduct = {
-      idsp: params.idsp,
-      mausac: addFormData.mausac,
-      kichthuoc: addFormData.kichthuoc,
-      soluong: addFormData.soluong,
-      // giaban: addFormData.giaban,
-      // gianhap: addFormData.gianhap,
+      id_sp: params.idsp,
+      id_ms: addFormData.mausac,
+      id_kt: addFormData.kichthuoc,
+      so_luong_sp: addFormData.soluong,
     };
     const newDetailProducts = [...detailProduct, newDetailProduct];
     setDetailProduct(newDetailProducts);
+  };
+  const deleteRow = (idrow) => {
+    setDetailProduct(detailProduct.filter((item,index)=> index !== idrow));
   };
 
   return (
@@ -403,7 +408,9 @@ function EditProduct() {
               placeholder="Số lượng"
               onChange={handleAddFormChange}
               className="h-8 px-2 w-full border border-slate-400 outline-none rounded-lg"
-              type="text"
+              type="number"
+              min={0}
+            
             />
           </div>
           <button className="px-4 bg-slate-400 rounded-lg">Thêm</button>
@@ -416,19 +423,26 @@ function EditProduct() {
               <th className="h-8 border border-slate-400">Màu Sắc</th>
               <th className="h-8 border border-slate-400">Kích Thước</th>
               <th className="h-8 border border-slate-400">Số Lượng</th>
+              <th className="h-8 border border-slate-400">Hành động</th>
             </tr>
           </thead>
           <tbody>
-            {detailProduct?.map(({ mausac, kichthuoc, soluong }, idx) => (
+            {detailProduct?.map(({ id_ms, id_kt, so_luong_sp }, idx) => (
               <tr key={idx}>
                 <td className="w-[20%] text-center border border-slate-400">
-                  {color.filter((item) => item.id_ms === mausac)[0].ten_ms}
+                  {color.filter((item) => item.id_ms === id_ms)[0].ten_ms}
                 </td>
                 <td className="w-[20%] text-center border border-slate-400">
-                  {size.filter((item) => item.id_kt === kichthuoc)[0].ten_kt}
+                  {size.filter((item) => item.id_kt === id_kt)[0].ten_kt}
                 </td>
                 <td className="w-[20%] text-center border border-slate-400">
-                  {soluong}
+                  {so_luong_sp}
+                </td>
+                <td
+                  className="w-[20%] text-center border border-slate-400 cursor-pointer hover:bg-zinc-500"
+                  onClick={() => deleteRow(idx)}
+                >
+                  x
                 </td>
               </tr>
             ))}

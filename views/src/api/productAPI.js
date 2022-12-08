@@ -60,6 +60,11 @@ const productAPI = {
     const API_URL = "/api/manage/product/list_manage";
     return axiosClient.get(API_URL);
   },
+  getDetailProduct(key) {
+    const API_URL = `/api/manage/product/detail/idsp=${key}`;
+    return axiosClient.get(API_URL);
+  },
 };
+
 
 export default productAPI;
