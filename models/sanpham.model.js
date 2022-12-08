@@ -107,6 +107,19 @@ Product.getId = (result) => {
   });
 };
 
+Product.getDetail = (key,result) => {
+  mysql.query(`SELECT * FROM chi_tiet_sp WHERE chi_tiet_sp.id_sp ='${key}' ORDER BY SUBSTRING(id_sp,4)*1 ASC;`, (err, res) => {
+    if (err) {
+      console.log("ERROR: ", err);
+      result(err, null);
+      return;
+    }
+    console.log("Get id product");
+    console.log(res);
+    result(null, res);
+  });
+};
+
 Product.updateProduct = (idsp, product, result) => {
 
   mysql.query(

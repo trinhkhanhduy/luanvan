@@ -46,7 +46,22 @@ module.exports = {
       } else res.status(200).send(data);
     });
   },
-
+  getDetail: (req, res) => {
+    if (!req.params) {
+      res.status(400).send({
+        message: "Content can not be empty!",
+      });
+    }
+    Product.getDetail(req.params.idsp, (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: err.message,
+        });
+      }
+       else res.status(200).send(data);
+    });
+  },
+  
   getListProducts: (req, res) => {
     if (!req.body) {
       res.status(400).send({

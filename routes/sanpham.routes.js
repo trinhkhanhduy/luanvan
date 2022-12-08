@@ -23,4 +23,5 @@ module.exports = (app) => {
 
   app.get("/api/manage/discount_product/list", product.getDiscountProduct);
   app.get("/api/manage/discount_product/list_list", product.getDiscountProductList);
+  app.get("/api/manage/product/detail/idsp=:idsp", product.getDetail);
 };

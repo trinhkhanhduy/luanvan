@@ -20,4 +20,10 @@ module.exports = (app) => {
   app.put("/api/change_password/email=:email", customer.changePassword);
 
   app.put("/api/update_user/status=:status/idkh=:idkh", customer.updateStatusUser);
+  app.get("/api/get_user/detail/id_kh=:id_kh", customer.getDetailUser);
+  app.get("/api/get_user/money/id_kh=:id_kh", customer.getMoneyUser);
+  app.put("/api/update_user/money/type=:type/idkh=:idkh", customer.updateMemberUser);
+ 
+
+
 };

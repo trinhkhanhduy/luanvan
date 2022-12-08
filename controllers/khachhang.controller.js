@@ -6,7 +6,7 @@ dotenv.config();
 
 module.exports = {
   createUser: (req, res) => {
-    if (!req.body) {
+    if (!req.body) { 
       res.status(400).send({
         message: "Content can not be empty!",
       });
@@ -73,7 +73,28 @@ module.exports = {
       }
     });
   },
-
+  getDetailUser: (req, res) => {
+    User.getDetailUser(req.params.id_kh, (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: err.message,
+        });
+      } else {
+        res.status(200).send(data);
+      }
+    });
+  },
+  getMoneyUser: (req, res) => {
+    User.getMoneyUser(req.params.id_kh, (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: err.message,
+        });
+      } else {
+        res.status(200).send(data);
+      }
+    });
+  },
   getListClient: (req, res) => {
     User.getListClient((err, data) => {
       if (err) {
@@ -109,4 +130,17 @@ module.exports = {
       }
     });
   },
+  updateMemberUser: (req, res) => {
+    // console.log(req.params);
+    User.updateMemberUser(req.params.idkh, req.params.type, (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: err.message,
+        });
+      } else {
+        res.status(200).send(data);
+      }
+    });
+  },
 };
+

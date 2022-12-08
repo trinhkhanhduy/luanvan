@@ -18,6 +18,7 @@ DetailProduct.createDetailProduct = (newDetailProduct, result) => {
   });
 };
 DetailProduct.updateDetailproduct = (data, result) => {
+  console.log(data);
   mysql.query(
     `INSERT INTO chi_tiet_sp(so_luong_sp, id_sp, id_ms, id_kt) VALUES ('${data.soluong}','${data.idsp}','${data.idms}','${data.idkt}');`,
     (err, res) => {
