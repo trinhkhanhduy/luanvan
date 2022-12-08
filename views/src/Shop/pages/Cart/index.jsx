@@ -122,7 +122,7 @@ function Cart() {
             <div>
               <p className="px-2 w-[5%] text-[18px]">x{so_luong_xuat}</p>
             </div>
-            <div className="flex relative gap-1 ml-3 ">
+            <div className="flex relative gap-1 ml-3 w-[90px] ">
               <IconButton
                 onClick={() => plusNumber(id_sp, so_luong_xuat + 1, id_ms)}
                 disabled={so_luong_xuat >= soluong ? true : false}
@@ -220,6 +220,14 @@ function Cart() {
                     style: "currency",
                     currency: "VND",
                   }).format(sumPrice)}
+                </div>
+              </div>
+              <div className="flex w-full">
+                <div className="w-[60%]">
+                  <span>Thành viên: </span>
+                </div>
+                <div>
+                 50%
                 </div>
               </div>
               <div className="flex w-full">

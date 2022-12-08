@@ -18,11 +18,10 @@ function Delivery() {
     const fieldValue = e.target.value;
     const getPriceShip = await deliverAPI.getPriceShip(fieldValue);
     setInvoice(getPriceShip);
-
   };
   console.log(invoice);
   return (
-    <div className="px-[20px]">
+    <div className="px-[20px] ">
       <div className="w-[10%]">
         <select
           name="nv"
@@ -38,7 +37,7 @@ function Delivery() {
             ))}
         </select>
       </div>
-      <div className="grid grid-cols-4 gap-5 mt-5 ">
+      <div className="grid grid-cols-5 gap-5 mt-5 overflow-y-auto h-[calc(72vh)]">
         {invoice.map(
           (
             {
@@ -108,3 +107,4 @@ function Delivery() {
 }
 
 export default Delivery;
+

@@ -5,7 +5,7 @@ import "./index.css";
 
 function Footer() {
   return (
-    <div className=" mt-10 p-6 text-white bg-white  opacity-90 shadow-md container">
+    <div className=" mt-10 p-6 text-white bg-slate-700  opacity-90 shadow-md container">
       <div className="flex gap-6 leading-8 h-[100%] justify-center items-center">
         <div className="w-[25%]  ml-[10%]  ">
           <span className="text-[30px] font-[900] bg-text-color bg-clip-text  ">

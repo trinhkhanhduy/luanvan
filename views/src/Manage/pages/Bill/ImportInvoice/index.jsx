@@ -48,7 +48,7 @@ function ImportInvoice() {
   const { enqueueSnackbar } = useSnackbar();
 
   const idnv = useSelector((state) => state.employee?.current[0]?.id_nv);
- 
+
   useEffect(() => {
     (async () => {
       try {
@@ -75,16 +75,15 @@ function ImportInvoice() {
   };
 
   const getColorProduct = async (idms) => {
-    const resSize = await detailProductAPI.getListColor(nameProduct, idms);
-    setSizeList(resSize);
-    setColor(idms);
+    if (idms) {
+      const resSize = await detailProductAPI.getListColor(nameProduct, idms);
+      setSizeList(resSize);
+      setColor(idms);
+    }
   };
   const onchangeSize = (kt) => {
-    
-     setSize(kt);
-    
+    setSize(kt);
   };
-  console.log(size);
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -244,7 +243,7 @@ function ImportInvoice() {
                 </div>
                 <div className="w-1/2">
                   <select
-                    onChange={(e) => getColorProduct(e.target.value)}
+                    onClick={(e) => getColorProduct(e.target.value)}
                     className="block mb-4 p-2 px-4 w-full border rounded-md"
                   >
                     <option value="">Chọn màu sắc</option>

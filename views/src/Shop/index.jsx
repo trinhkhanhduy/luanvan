@@ -19,7 +19,7 @@ const CheckPay = React.lazy(() => import("./pages/CheckPay"));
 const InfoProduct = React.lazy(() => import("./pages/InfoProduct"));
 const Sales = React.lazy(() => import("./pages/Sales"));
 const ChangePass = React.lazy(() => import("./pages/ChangePass"));
-const Member = React.lazy(() => import("./pages/member"));
+// const Member = React.lazy(() => import("./pages/member"));
 
 
 function Shop() {
@@ -41,7 +41,7 @@ function Shop() {
         <Route path="/order/detail_pay_order" element={<BuyNow />} />
         <Route path="/check_pay" element={<CheckPay />} />
         <Route path="/changePass" element={<ChangePass />} />
-        <Route path="/member" element={<Member />} />
+        {/* <Route path="/member" element={<Member />} /> */}
      
         <Route path="/*" element={<NotFound />} />
       </Routes>

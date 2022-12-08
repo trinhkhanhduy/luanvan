@@ -38,7 +38,6 @@ export default function TableData({rows}) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -63,6 +62,7 @@ export default function TableData({rows}) {
                 <TableRow hover role="checkbox" tabIndex={-1} key={idx}>
                   {columns.map((column) => {
                     const value = row[column.id];
+                 
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format && typeof value === "number" ? column.format(value) : value}

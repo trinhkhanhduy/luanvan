@@ -513,6 +513,12 @@ function BuyNow() {
                   </p>
                 </div>
                 <div className="flex justify-between">
+                  <p>Thành viên</p>
+                  <p>
+                   2%
+                  </p>
+                </div>
+                <div className="flex justify-between">
                   <p>Phí giao hàng</p>
                   <p>{sumPrice > 1000000 ? <>Miễn phí</> : <>30.000 đ</>}</p>
                 </div>
