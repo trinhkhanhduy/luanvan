@@ -1,7 +1,7 @@
 import moment from "moment";
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 
@@ -9,6 +9,7 @@ import deliverAPI from "../../api/deliverAPI";
 import exportInvoiceAPI from "../../api/exportInvoiceAPI";
 import detailExportInvoiceAPI from "../../api/detailExportInvoiceAPI";
 import detailProductAPI from "../../api/detailProductAPI";
+import userAPI from "../../api/userAPI";
 
 const style = {
   position: "absolute",
@@ -26,17 +27,31 @@ function Dashbroad() {
   const [invoice2, setInvoice2] = useState([]);
   const [count, setCount] = useState(0);
   const [note, setNote] = useState("");
-
+  const [money, setMoney] = useState("");
+  const [sumPrice, setSumPrice] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const id_nv = useSelector((state) => state.employee?.currentDeliver[0]?.id_nv);
+  const id_nv = useSelector(
+    (state) => state.employee?.currentDeliver[0]?.id_nv
+  );
+  const id_kh = useSelector((state) => state?.user?.current.dataUser[0]?.id_kh);
+  const listBuy = useSelector((state) => state?.listbuy?.list);
   const naviagte = useNavigate();
-  console.log(id_nv)
-
   useEffect(() => {
     (async () => {
+      let a = 0;
+      if (listBuy.length !== 0) {
+        for (let i = 0; i < listBuy.length; i++) {
+          a +=
+            listBuy[i]?.so_luong_xuat *
+            (listBuy[i]?.gia_ban -
+              (listBuy[i]?.gia_ban * listBuy[i]?.giam_gia) / 100);
+        }
+        setSumPrice(a);
+      }
+      const totalMoney = await userAPI.getSumMoneyUser(id_kh);
+      setMoney(totalMoney[0]?.tongtien);
       if (id_nv) {
         const res_1 = await deliverAPI.getInvoiceStatus(id_nv, {
           status: "Đang xử lý",
@@ -63,7 +78,14 @@ function Dashbroad() {
     });
     setCount((e) => e + 1);
   };
-
+  const typeMember =
+    sumPrice + money >= 10000000 && sumPrice + money < 30000000
+      ? 1
+      : sumPrice + money >= 30000000 && sumPrice + money < 50000000
+      ? 2
+      : sumPrice + money >= 50000000
+      ? 3
+      : 0;
   const cancelShip = async (idhdx) => {
     await deliverAPI.deleteInvoice(idhdx);
     await exportInvoiceAPI.updateStatus(idhdx, {
@@ -80,6 +102,7 @@ function Dashbroad() {
     await exportInvoiceAPI.updateStatus(idhdx, {
       status: "Đã giao hàng",
     });
+    await userAPI.updateMember(id_kh, typeMember);
     setCount((e) => e + 1);
   };
 
@@ -94,7 +117,9 @@ function Dashbroad() {
       await exportInvoiceAPI.updateStatus(idhdx, {
         status: "Hoàn hàng",
       });
-      const data_hdx = await detailExportInvoiceAPI.getDetailExportInvoice(idhdx);
+      const data_hdx = await detailExportInvoiceAPI.getDetailExportInvoice(
+        idhdx
+      );
       await detailProductAPI.addNumberProduct(data_hdx);
       handleClose();
     } else {
@@ -106,146 +131,178 @@ function Dashbroad() {
   return (
     <div className="pb-20">
       <div className="py-5">
-        <p className="text-[35px] font-[900] text-center bg-text-color bg-clip-text text-transparent">DShop</p>
+        <p className="text-[35px] font-[900] text-center bg-text-color bg-clip-text text-transparent">
+          DShop
+        </p>
       </div>
       <div className="px-4">
         <p className="text-[20px]">Đơn hàng cần được giao</p>
         <div>
-          {invoice2?.map(({id_hdx, ten_kh, so_dien_thoai, tong_tien_hdx, dia_chi_hdx, trang_thai_gh}, idx) => (
-            <div key={idx} className="mt-5  p-4 rounded-lg shadow-lg max-w-[600px]">
-              <Link to={`/deliver/${id_hdx}`}>
-                <p>Mã đơn hàng: {id_hdx}</p>
-                <p>Tên khách hàng: {ten_kh}</p>
-                <p>Số điện thoại: {so_dien_thoai}</p>
-                <p>
-                  Số tiền cần thu:{" "}
-                  <strong>
-                    {tong_tien_hdx.toLocaleString("it-IT", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </strong>
-                </p>
-                <p>Địa chỉ: {dia_chi_hdx}</p>
-              </Link>
-              {trang_thai_gh === "Đang xử lý" && (
-                <div className="flex gap-5">
-                  <button
-                    onClick={() => waitShip(id_hdx)}
-                    className="block mt-4 px-4 py-2 bg-amber-600 text-white rounded-lg shadow-md"
-                  >
-                    Giao hàng
-                  </button>
-                  <button
-                    onClick={() => cancelShip(id_hdx)}
-                    className="block mt-4 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md"
-                  >
-                    Hủy
-                  </button>
-                </div>
-              )}
+          {invoice2?.map(
+            (
+              {
+                id_hdx,
+                ten_kh,
+                so_dien_thoai,
+                tong_tien_hdx,
+                dia_chi_hdx,
+                trang_thai_gh,
+              },
+              idx
+            ) => (
+              <div
+                key={idx}
+                className="mt-5  p-4 rounded-lg shadow-lg max-w-[600px]"
+              >
+                <Link to={`/deliver/${id_hdx}`}>
+                  <p>Mã đơn hàng: {id_hdx}</p>
+                  <p>Tên khách hàng: {ten_kh}</p>
+                  <p>Số điện thoại: {so_dien_thoai}</p>
+                  <p>
+                    Số tiền cần thu:{" "}
+                    <strong>
+                      {tong_tien_hdx.toLocaleString("it-IT", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </strong>
+                  </p>
+                  <p>Địa chỉ: {dia_chi_hdx}</p>
+                </Link>
+                {trang_thai_gh === "Đang xử lý" && (
+                  <div className="flex gap-5">
+                    <button
+                      onClick={() => waitShip(id_hdx)}
+                      className="block mt-4 px-4 py-2 bg-amber-600 text-white rounded-lg shadow-md"
+                    >
+                      Giao hàng
+                    </button>
+                    <button
+                      onClick={() => cancelShip(id_hdx)}
+                      className="block mt-4 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md"
+                    >
+                      Hủy
+                    </button>
+                  </div>
+                )}
 
-              {trang_thai_gh === "Đang giao hàng" && (
-                <>
+                {trang_thai_gh === "Đang giao hàng" && (
+                  <>
+                    <button
+                      onClick={() => successShip(id_hdx)}
+                      className="block mt-4 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md"
+                    >
+                      Xác nhận giao hàng
+                    </button>
+                    <button
+                      onClick={handleOpen}
+                      className="block mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg shadow-md"
+                    >
+                      Hoàn hàng
+                    </button>
+                    <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={style}>
+                        <p>Ghi chú</p>
+                        <textarea
+                          onChange={(e) => setNote(e.target.value)}
+                          className="p-2 w-full border border-slate-600 outline-none rounded-lg"
+                          rows="5"
+                        ></textarea>
+                        <button
+                          onClick={() => handleBackOrder(id_hdx)}
+                          className="block mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg shadow-md"
+                        >
+                          Xác nhận
+                        </button>
+                      </Box>
+                    </Modal>
+                  </>
+                )}
+
+                {trang_thai_gh === "Hoàn hàng" && (
+                  <button className="block mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg shadow-md cursor-not-allowed opacity-80">
+                    Đã hoàn hàng
+                  </button>
+                )}
+
+                {trang_thai_gh === "Đã giao hàng" && (
+                  <button className="block mt-4 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md cursor-not-allowed opacity-60">
+                    Đã giao hàng
+                  </button>
+                )}
+              </div>
+            )
+          )}
+          {invoice?.map(
+            (
+              {
+                id_hdx,
+                ten_kh,
+                so_dien_thoai,
+                tong_tien_hdx,
+                dia_chi_hdx,
+                trang_thai_gh,
+              },
+              idx
+            ) => (
+              <div
+                key={idx}
+                className="mt-5 bg-slate-100 p-4 rounded-lg shadow-lg max-w-[600px]"
+              >
+                <Link to={`/deliver/${id_hdx}`}>
+                  <p>Mã đơn hàng: {id_hdx}</p>
+                  <p>Tên khách hàng: {ten_kh}</p>
+                  <p>Số điện thoại: {so_dien_thoai}</p>
+                  <p>
+                    Số tiền cần thu:{" "}
+                    <strong>
+                      {tong_tien_hdx.toLocaleString("it-IT", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </strong>
+                  </p>
+                  <p>Địa chỉ: {dia_chi_hdx}</p>
+                </Link>
+                {trang_thai_gh === "Đang xử lý" && (
+                  <div className="flex gap-5">
+                    <button
+                      onClick={() => waitShip(id_hdx)}
+                      className="block mt-4 px-4 py-2 bg-amber-600 text-white rounded-lg shadow-md"
+                    >
+                      Giao hàng
+                    </button>
+                    <button
+                      onClick={() => cancelShip(id_hdx)}
+                      className="block mt-4 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md"
+                    >
+                      Hủy
+                    </button>
+                  </div>
+                )}
+
+                {trang_thai_gh === "Đang giao hàng" && (
                   <button
                     onClick={() => successShip(id_hdx)}
                     className="block mt-4 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md"
                   >
                     Xác nhận giao hàng
                   </button>
-                  <button
-                    onClick={handleOpen}
-                    className="block mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg shadow-md"
-                  >
-                    Hoàn hàng
+                )}
+
+                {trang_thai_gh === "Đã giao hàng" && (
+                  <button className="block mt-4 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md cursor-not-allowed opacity-60">
+                    Đã giao hàng
                   </button>
-                  <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                  >
-                    <Box sx={style}>
-                      <p>Ghi chú</p>
-                      <textarea
-                        onChange={(e) => setNote(e.target.value)}
-                        className="p-2 w-full border border-slate-600 outline-none rounded-lg"
-                        rows="5"
-                      ></textarea>
-                      <button
-                        onClick={() => handleBackOrder(id_hdx)}
-                        className="block mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg shadow-md"
-                      >
-                        Xác nhận
-                      </button>
-                    </Box>
-                  </Modal>
-                </>
-              )}
-
-              {trang_thai_gh === "Hoàn hàng" && (
-                <button className="block mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg shadow-md cursor-not-allowed opacity-80">
-                  Đã hoàn hàng
-                </button>
-              )}
-
-              {trang_thai_gh === "Đã giao hàng" && (
-                <button className="block mt-4 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md cursor-not-allowed opacity-60">
-                  Đã giao hàng
-                </button>
-              )}
-            </div>
-          ))}
-          {invoice?.map(({id_hdx, ten_kh, so_dien_thoai, tong_tien_hdx, dia_chi_hdx, trang_thai_gh}, idx) => (
-            <div key={idx} className="mt-5 bg-slate-100 p-4 rounded-lg shadow-lg max-w-[600px]">
-              <Link to={`/deliver/${id_hdx}`}>
-                <p>Mã đơn hàng: {id_hdx}</p>
-                <p>Tên khách hàng: {ten_kh}</p>
-                <p>Số điện thoại: {so_dien_thoai}</p>
-                <p>
-                  Số tiền cần thu:{" "}
-                  <strong>
-                    {tong_tien_hdx.toLocaleString("it-IT", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </strong>
-                </p>
-                <p>Địa chỉ: {dia_chi_hdx}</p>
-              </Link>
-              {trang_thai_gh === "Đang xử lý" && (
-                <div className="flex gap-5">
-                  <button
-                    onClick={() => waitShip(id_hdx)}
-                    className="block mt-4 px-4 py-2 bg-amber-600 text-white rounded-lg shadow-md"
-                  >
-                    Giao hàng
-                  </button>
-                  <button
-                    onClick={() => cancelShip(id_hdx)}
-                    className="block mt-4 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md"
-                  >
-                    Hủy
-                  </button>
-                </div>
-              )}
-
-              {trang_thai_gh === "Đang giao hàng" && (
-                <button
-                  onClick={() => successShip(id_hdx)}
-                  className="block mt-4 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md"
-                >
-                  Xác nhận giao hàng
-                </button>
-              )}
-
-              {trang_thai_gh === "Đã giao hàng" && (
-                <button className="block mt-4 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md cursor-not-allowed opacity-60">
-                  Đã giao hàng
-                </button>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>

@@ -9,11 +9,11 @@ import { removeAllCart } from "../../../redux/cartSlide";
 import { addtoListBuy } from "../../../redux/listbuySlice";
 import { setQuantity } from "../../../redux/cartSlide";
 import { IconButton } from "@mui/material";
-import { border } from "@mui/system";
 function Cart() {
   const dataCart = useSelector((state) => state?.cart?.cartItem);
-  const id_dc = useSelector((state) => state?.address?.addresslist);
-
+  const thanh_vien = useSelector(
+    (state) => state?.user?.current?.dataUser[0].thanh_vien
+  );
   const [sumPrice, setSumPrice] = useState("");
 
   const dispatch = useDispatch();
@@ -50,7 +50,9 @@ function Cart() {
   };
   const deleteNumber = (id, soluong, id_ms, id_kt) => {
     if (soluong > 0) {
-      dispatch(setQuantity({ id_sp: id, so_luong_xuat: soluong,id_ms: id_ms }));
+      dispatch(
+        setQuantity({ id_sp: id, so_luong_xuat: soluong, id_ms: id_ms })
+      );
     } else {
       deleteCart(id, id_ms, id_kt);
     }
@@ -104,14 +106,14 @@ function Cart() {
               <p className="px-5 text-[18px]">
                 {giam_gia ? (
                   <>
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
                     }).format(gia_ban - (gia_ban * giam_gia) / 100)}
                   </>
                 ) : (
                   <>
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
                     }).format(gia_ban)}
@@ -159,7 +161,7 @@ function Cart() {
               <p className="px-5 text-[18px] font-bold">
                 {!!giam_gia ? (
                   <>
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
                     }).format(
@@ -216,7 +218,7 @@ function Cart() {
                   <span>Tạm tính: </span>
                 </div>
                 <div>
-                  {new Intl.NumberFormat("vi-VN", {
+                  {new Intl.NumberFormat("it-IT", {
                     style: "currency",
                     currency: "VND",
                   }).format(sumPrice)}
@@ -227,7 +229,15 @@ function Cart() {
                   <span>Thành viên: </span>
                 </div>
                 <div>
-                 50%
+                  {thanh_vien === 0
+                    ? "0%"
+                    : thanh_vien === 1
+                    ? "5%"
+                    : thanh_vien === 2
+                    ? "10%"
+                    : thanh_vien === 2
+                    ? "20%"
+                    : ""}
                 </div>
               </div>
               <div className="flex w-full">
@@ -235,7 +245,11 @@ function Cart() {
                   <span>Phí vận chuyển: </span>
                 </div>
                 <div>
-                  <span>{sumPrice > 1000000 ? "Miễn phí" : "30.000 đ"}</span>
+                  <span>
+                    {sumPrice > 1000000 || thanh_vien !== 0
+                      ? "Miễn phí"
+                      : "30.000 đ"}
+                  </span>
                 </div>
               </div>
               <div className="flex w-full">
@@ -244,10 +258,22 @@ function Cart() {
                 </div>
                 <div>
                   <span className="font-bold">
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
-                    }).format(sumPrice > 1000000 ? sumPrice : sumPrice + 30000)}
+                    }).format(
+                      thanh_vien === 1
+                        ? sumPrice - ((sumPrice * 5) / 100)
+                        : thanh_vien === 2
+                        ? sumPrice - ((sumPrice * 10) / 100)
+                        : thanh_vien === 3
+                        ? sumPrice - ((sumPrice * 20) / 100)
+                        : thanh_vien === 0 && sumPrice > 1000000
+                        ? sumPrice
+                        : thanh_vien === 0 && sumPrice < 1000000
+                        ? sumPrice + 30000
+                        : ""
+                    )}
                   </span>
                 </div>
               </div>

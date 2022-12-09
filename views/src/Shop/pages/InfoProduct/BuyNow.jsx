@@ -54,7 +54,6 @@ function BuyNow() {
   const [provinceName, setProvinceName] = useState("");
   const [districtName, setDistrictName] = useState("");
   const [wardName, setWardName] = useState("");
-  const [money, setMoney] = useState("");
   const [openAddress, setOpenAddress] = useState(false);
   const handleOpenAddress = () => setOpenAddress(true);
   const handleCloseAddress = () => setOpenAddress(false);
@@ -64,6 +63,10 @@ function BuyNow() {
   const handleCloseFormAddress = () => setOpenFormAddress(false);
 
   const id_kh = useSelector((state) => state?.user?.current.dataUser[0]?.id_kh);
+  const thanh_vien = useSelector(
+    (state) => state?.user?.current.dataUser[0]?.thanh_vien
+  );
+
   const dia_chi = useSelector((state) => state?.address?.addresslist[0]);
   const listBuy = useSelector((state) => state?.listbuy?.list);
   const addressChecked = useSelector((state) => state.address?.addresslist);
@@ -76,13 +79,7 @@ function BuyNow() {
 
   const { handleSubmit: handleSubmitAddress, control: controlAddress } =
     useForm();
-  const typeMember = sumPrice + money >= 10000000 && sumPrice + money < 30000000
-  ? 1
-  : sumPrice + money >= 30000000 && sumPrice + money < 50000000
-  ? 2
-  : sumPrice + money >= 50000000
-  ? 3
-  : 0;
+
   useEffect(() => {
     (async () => {
       let a = 0;
@@ -95,8 +92,7 @@ function BuyNow() {
         }
         setSumPrice(a);
       }
-      const totalMoney = await userAPI.getSumMoneyUser(id_kh);
-      setMoney(totalMoney[0]?.tongtien);
+    
     })();
   }, [params, listBuy, count]);
 
@@ -104,12 +100,23 @@ function BuyNow() {
     const id_hdx = await exportInvoiceAPI.createExportInvoice({
       tenkh: dia_chi.ten_kh,
       sdtkh: dia_chi.sdt_kh,
-      tongtienhdx: sumPrice > 1000000 ? sumPrice : sumPrice + 30000,
+      tongtienhdx:
+        thanh_vien === 1
+          ? sumPrice - (sumPrice * 5) / 100
+          : thanh_vien === 2
+          ? sumPrice - (sumPrice * 10) / 100
+          : thanh_vien === 3
+          ? sumPrice - (sumPrice * 20) / 100
+          : thanh_vien === 0 && sumPrice > 1000000
+          ? sumPrice
+          : thanh_vien === 0 && sumPrice < 1000000
+          ? sumPrice + 30000
+          : 0,
       ngaylaphdx: moment().format("YYYY-MM-DD"),
       trangthai: "Đang xử lý",
       hinhthuctt: "offline",
       diachi: dia_chi.dia_chi_kh,
-      tienvc: sumPrice > 1000000 ? 0 : 30000,
+      tienvc: sumPrice > 1000000 || thanh_vien !== 0 ? 0 : 30000,
       idkh: id_kh,
     });
 
@@ -119,15 +126,11 @@ function BuyNow() {
     });
 
     await detailProductAPI.removeProduct(listBuy);
-     
-
-    await userAPI.updateMember(id_kh, typeMember);
     if (type === "cart") {
       dispatch(removeAllCart());
     }
     navigation("/shop/orders");
   };
-
   const payoffline = () => {
     try {
       if (!dia_chi.id_dc) {
@@ -204,14 +207,14 @@ function BuyNow() {
               <p className="text-[18px] font-bold">
                 {!!giam_gia ? (
                   <>
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
                     }).format(gia_ban - (gia_ban * giam_gia) / 100)}
                   </>
                 ) : (
                   <>
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
                     }).format(gia_ban)}
@@ -506,7 +509,7 @@ function BuyNow() {
                 <div className="flex justify-between">
                   <p>Tạm tính</p>
                   <p>
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
                     }).format(sumPrice)}
@@ -515,21 +518,46 @@ function BuyNow() {
                 <div className="flex justify-between">
                   <p>Thành viên</p>
                   <p>
-                   2%
+                    {" "}
+                    {thanh_vien === 0
+                      ? "0%"
+                      : thanh_vien === 1
+                      ? "5%"
+                      : thanh_vien === 2
+                      ? "10%"
+                      : thanh_vien === 2
+                      ? "20%"
+                      : ""}
                   </p>
                 </div>
                 <div className="flex justify-between">
                   <p>Phí giao hàng</p>
-                  <p>{sumPrice > 1000000 ? <>Miễn phí</> : <>30.000 đ</>}</p>
+                  <p>
+                    {sumPrice > 1000000 || thanh_vien !== 0
+                      ? "Miễn phí"
+                      : "30.000 đ"}
+                  </p>
                 </div>
                 <hr />
                 <div className="flex justify-between">
                   <p>Tổng cộng</p>
                   <p>
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
-                    }).format(sumPrice > 1000000 ? sumPrice : sumPrice + 30000)}
+                    }).format(
+                      thanh_vien === 1
+                        ? sumPrice - (sumPrice * 5) / 100
+                        : thanh_vien === 2
+                        ? sumPrice - (sumPrice * 10) / 100
+                        : thanh_vien === 3
+                        ? sumPrice - (sumPrice * 20) / 100
+                        : thanh_vien === 0 && sumPrice > 1000000
+                        ? sumPrice
+                        : thanh_vien === 0 && sumPrice < 1000000
+                        ? sumPrice + 30000
+                        : ""
+                    )}
                   </p>
                 </div>
               </>

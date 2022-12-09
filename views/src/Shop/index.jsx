@@ -1,10 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-
-import Header from "../components/Header/index"
+import Header from "../components/Header/index";
 import NotFound from "../components/NotFound";
 import BuyNow from "./pages/InfoProduct/BuyNow";
-
+import PrivateRoutes from "./PrivateShop";
 const Home = React.lazy(() => import("./pages/Home"));
 const Products = React.lazy(() => import("./pages/Products"));
 const Login = React.lazy(() => import("./pages/Login"));
@@ -19,33 +18,31 @@ const CheckPay = React.lazy(() => import("./pages/CheckPay"));
 const InfoProduct = React.lazy(() => import("./pages/InfoProduct"));
 const Sales = React.lazy(() => import("./pages/Sales"));
 const ChangePass = React.lazy(() => import("./pages/ChangePass"));
-// const Member = React.lazy(() => import("./pages/member"));
-
-
+const Member = React.lazy(() => import("./pages/member"));
 function Shop() {
   return (
     <div>
-       <Header/>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/member" element={<Member />} />
+          <Route path="/changePass" element={<ChangePass />} />
+          <Route path="/check_pay" element={<CheckPay />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/review/:idhdx" element={<DetailReview />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/order/:idhdx" element={<DetailOrder />} />
+          <Route path="/order/detail_pay_order" element={<BuyNow />} />
+        </Route>
         <Route path="/products" element={<Products />} />
         <Route path="/product/SP=:SP" element={<InfoProduct />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/forgot_password" element={<ForgotPass />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sale" element={<Sales />} />
-        <Route path="/forgot_password" element={<ForgotPass />} />
-        <Route path="/review/:idhdx" element={<DetailReview />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/order/:idhdx" element={<DetailOrder />} />
-        <Route path="/order/detail_pay_order" element={<BuyNow />} />
-        <Route path="/check_pay" element={<CheckPay />} />
-        <Route path="/changePass" element={<ChangePass />} />
-        {/* <Route path="/member" element={<Member />} /> */}
-     
         <Route path="/*" element={<NotFound />} />
       </Routes>
-
     </div>
   );
 }

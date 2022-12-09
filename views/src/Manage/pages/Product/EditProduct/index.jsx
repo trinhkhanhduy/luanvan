@@ -86,8 +86,8 @@ function EditProduct() {
   useEffect(() => {
     (async () => {
       try {
-        document.cookie = "username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
-        console.log("a",document.cookie);
+        // document.cookie = "username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+        // console.log("a",document.cookie);
         const resProduct = await productAPI.getProduct(params.idsp);
         const resDetailProduct = await productAPI.getDetailProduct(params.idsp);
         const resImage = await imageAPI.getImage(params.idsp);
@@ -416,14 +416,14 @@ function EditProduct() {
           <button className="px-4 bg-slate-400 rounded-lg">Thêm</button>
         </div>
       </form>
-      <div className="absolute top-[50%] w-[20%] left-[15%] ">
+      <div className="absolute top-[55%] w-[35%] left-[37%]">
         <table>
           <thead>
             <tr>
-              <th className="h-8 border border-slate-400">Màu Sắc</th>
-              <th className="h-8 border border-slate-400">Kích Thước</th>
-              <th className="h-8 border border-slate-400">Số Lượng</th>
-              <th className="h-8 border border-slate-400">Hành động</th>
+              <th className="h-8 border border-slate-400 w-[20%]">Màu Sắc</th>
+              <th className="h-8 border border-slate-400 w-[20%]">Kích Thước</th>
+              <th className="h-8 border border-slate-400 w-[20%]">Số Lượng</th>
+              <th className="h-8 border border-slate-400 w-[20%]">Hành động</th>
             </tr>
           </thead>
           <tbody>

@@ -28,9 +28,9 @@ function AddProduct() {
   const [submittedData, setSubmittedData] = useState({});
   const [detailProduct, setDetailProduct] = useState([]);
   const [addFormData, setAddFormData] = useState({
-    kichthuoc:"",mausac:""
-  }
-  );
+    kichthuoc: "",
+    mausac: "",
+  });
   const [file, setFile] = useState();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -55,7 +55,9 @@ function AddProduct() {
       };
     });
   };
-
+  // const numberWithCommas = (x) => {
+  //   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // };
   const uploadImage = async (e) => {
     setListImage(e.target.files);
     const imageNumber = e.target.files.length + imageUrl.length;
@@ -173,7 +175,6 @@ function AddProduct() {
     const newDetailProducts = [...detailProduct, newDetailProduct];
     setDetailProduct(newDetailProducts);
   };
-
 
   const handleOnChange = (e) => {
     setFile(e.target.files[0]);
@@ -373,10 +374,10 @@ function AddProduct() {
             {detailProduct?.map(({ mausac, kichthuoc }, idx) => (
               <tr key={idx}>
                 <td className="text-center border border-slate-400">
-                  {color.filter(item => item.id_ms === mausac)[0].ten_ms}
+                  {color.filter((item) => item.id_ms === mausac)[0].ten_ms}
                 </td>
                 <td className="text-center border border-slate-400">
-                {size.filter(item => item.id_kt === kichthuoc)[0].ten_kt}
+                  {size.filter((item) => item.id_kt === kichthuoc)[0].ten_kt}
                 </td>
               </tr>
             ))}
