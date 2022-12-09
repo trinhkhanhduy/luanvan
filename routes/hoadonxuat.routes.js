@@ -26,3 +26,4 @@ module.exports = (app) => {
 
   app.get("/api/manage/exportInvoice/wait_orders/list", exportInvoice.numberWait);
 };
+ 
