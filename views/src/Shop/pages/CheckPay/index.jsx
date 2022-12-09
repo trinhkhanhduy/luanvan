@@ -41,9 +41,7 @@ function CheckPay() {
                 ? param.vnp_Amount / 100 - ((param.vnp_Amount / 100) * 20) / 100
                 : thanh_vien === 0 && param.vnp_Amount / 100 > 1000000
                 ? param.vnp_Amount / 100
-                : thanh_vien === 0 && param.vnp_Amount / 100 < 1000000
-                ? param.vnp_Amount / 100 + 30000
-                : 0,
+                : param.vnp_Amount / 100 + 30000,
 
             ngaylaphdx: moment().format("YYYY-MM-DD"),
             trangthai: "Đang xử lý",

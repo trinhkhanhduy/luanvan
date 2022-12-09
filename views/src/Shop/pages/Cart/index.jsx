@@ -19,7 +19,6 @@ function Cart() {
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-
   useEffect(() => {
     let a = 0;
     if (dataCart.length !== 0) {
@@ -71,6 +70,7 @@ function Cart() {
       });
     }
   };
+
   const renderProduct =
     dataCart?.length > 0 ? (
       dataCart?.map(
@@ -103,23 +103,29 @@ function Cart() {
             </div>
 
             <div className="w-[15%]">
-              <p className="px-5 text-[18px]">
-                {giam_gia ? (
-                  <>
+              {giam_gia ? (
+                <>
+                  <p className="text-slate-700 text-center line-through">
+                  {new Intl.NumberFormat("it-IT", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(gia_ban)}
+                  </p>
+                  <p className="px-5 text-[18px]">
                     {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
                     }).format(gia_ban - (gia_ban * giam_gia) / 100)}
-                  </>
-                ) : (
-                  <>
-                    {new Intl.NumberFormat("it-IT", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(gia_ban)}
-                  </>
-                )}
-              </p>
+                  </p>
+                </>
+              ) : (
+                <p>
+                  {new Intl.NumberFormat("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(gia_ban)}
+                </p>
+              )}
             </div>
             <div>
               <p className="px-2 w-[5%] text-[18px]">x{so_luong_xuat}</p>
@@ -235,7 +241,7 @@ function Cart() {
                     ? "5%"
                     : thanh_vien === 2
                     ? "10%"
-                    : thanh_vien === 2
+                    : thanh_vien === 3
                     ? "20%"
                     : ""}
                 </div>
@@ -263,16 +269,14 @@ function Cart() {
                       currency: "VND",
                     }).format(
                       thanh_vien === 1
-                        ? sumPrice - ((sumPrice * 5) / 100)
+                        ? sumPrice - (sumPrice * 5) / 100
                         : thanh_vien === 2
-                        ? sumPrice - ((sumPrice * 10) / 100)
+                        ? sumPrice - (sumPrice * 10) / 100
                         : thanh_vien === 3
-                        ? sumPrice - ((sumPrice * 20) / 100)
+                        ? sumPrice - (sumPrice * 20) / 100
                         : thanh_vien === 0 && sumPrice > 1000000
                         ? sumPrice
-                        : thanh_vien === 0 && sumPrice < 1000000
-                        ? sumPrice + 30000
-                        : ""
+                        : sumPrice + 30000
                     )}
                   </span>
                 </div>

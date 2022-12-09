@@ -20,7 +20,7 @@ import { address, removeOneAddress } from "../../../redux/addressSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import payOnlineAPI from "../../../api/payOnlineAPI";
 import detailProductAPI from "../../../api/detailProductAPI";
-import userAPI from "../../../api/userAPI";
+// import userAPI from "../../../api/userAPI";
 
 const styleAddress = {
   position: "absolute",
@@ -92,7 +92,6 @@ function BuyNow() {
         }
         setSumPrice(a);
       }
-    
     })();
   }, [params, listBuy, count]);
 
@@ -109,9 +108,7 @@ function BuyNow() {
           ? sumPrice - (sumPrice * 20) / 100
           : thanh_vien === 0 && sumPrice > 1000000
           ? sumPrice
-          : thanh_vien === 0 && sumPrice < 1000000
-          ? sumPrice + 30000
-          : 0,
+          : sumPrice + 30000,
       ngaylaphdx: moment().format("YYYY-MM-DD"),
       trangthai: "Đang xử lý",
       hinhthuctt: "offline",
@@ -204,23 +201,29 @@ function BuyNow() {
               <p>{ten_sp}</p>
             </div>
             <div className="w-[20%]">
-              <p className="text-[18px] font-bold">
-                {!!giam_gia ? (
-                  <>
+              {!!giam_gia ? (
+                <>
+                  <p className="text-slate-700 text-center line-through">
+                  {new Intl.NumberFormat("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(gia_ban)}
+                  </p>
+                  <p className="text-[18px] text-center font-bold">
                     {new Intl.NumberFormat("it-IT", {
                       style: "currency",
                       currency: "VND",
                     }).format(gia_ban - (gia_ban * giam_gia) / 100)}
-                  </>
-                ) : (
-                  <>
-                    {new Intl.NumberFormat("it-IT", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(gia_ban)}
-                  </>
-                )}
-              </p>
+                  </p>
+                </>
+              ) : (
+                <p>
+                  {new Intl.NumberFormat("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(gia_ban)}
+                </p>
+              )}
             </div>
             <div className="w-[33%] text-center">
               <p className="text-[16px] text-slate-600">
@@ -525,9 +528,7 @@ function BuyNow() {
                       ? "5%"
                       : thanh_vien === 2
                       ? "10%"
-                      : thanh_vien === 2
-                      ? "20%"
-                      : ""}
+                      : "20%"}
                   </p>
                 </div>
                 <div className="flex justify-between">
@@ -554,9 +555,7 @@ function BuyNow() {
                         ? sumPrice - (sumPrice * 20) / 100
                         : thanh_vien === 0 && sumPrice > 1000000
                         ? sumPrice
-                        : thanh_vien === 0 && sumPrice < 1000000
-                        ? sumPrice + 30000
-                        : ""
+                        : sumPrice + 30000
                     )}
                   </p>
                 </div>

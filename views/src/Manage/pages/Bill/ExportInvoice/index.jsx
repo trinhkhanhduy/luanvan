@@ -11,6 +11,7 @@ import employeeAPI from "../../../../api/employeeAPI";
 import deliverAPI from "../../../../api/deliverAPI";
 import { useReactToPrint } from "react-to-print";
 import "./style.css";
+import userAPI from "../../../../api/userAPI";
 const style = {
   position: "absolute",
   top: "50%",
@@ -41,13 +42,12 @@ function ExportInvoice() {
   const [listOrder, setListOrder] = useState([]);
   const [idOrder, setIdOrder] = useState("");
   const [customer, setCustomer] = useState([]);
-
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openCancel, setOpenCancel] = useState(false);
   const [openView, setOpenView] = useState(false);
   const [tong, setTong] = useState(0);
   const [khuyenmai, setkhuyenmai] = useState(0);
-
+  const [thanhvien, setThanhVien] = useState("");
   const handleOpenConfirm = () => setOpenConfirm(true);
   const handleCloseConfirm = () => setOpenConfirm(false);
   const handleOpenCancel = () => setOpenCancel(true);
@@ -79,7 +79,6 @@ function ExportInvoice() {
       setDataBill(result);
     })();
   }, [count, listOrder]);
-  console.log(dataBill);
   const handleConfirm = async () => {
     if (deliver) {
       await exportInvoiceAPI.updateStatus(idOrder, {
@@ -120,6 +119,8 @@ function ExportInvoice() {
     setCustomer(res);
     const data = await detailExportInvoiceAPI.getDetailExportInvoice(id_hdx);
     setListOrder(data);
+    const thanh_vien = await userAPI.getOneUser(data[0].id_kh);
+    setThanhVien(thanh_vien[0]?.thanh_vien);
   };
   // const handlePrint = async (id_hdx) => {
   //   const res = await exportInvoiceAPI.getExportInvoice(id_hdx);
@@ -298,17 +299,24 @@ function ExportInvoice() {
                       Địa chỉ: <strong>{customer[0]?.dia_chi_hdx}</strong>
                     </p>
                     <p>
+                      Thành viên:{" "}
+                      <strong>
+                        {thanhvien === 1
+                          ? "-5%"
+                          : thanhvien === 2
+                          ? "-10%"
+                          : thanhvien === 3
+                          ? "-20%"
+                          : ""}
+                      </strong>
+                    </p>
+                    <p>
                       Tổng tiền:{" "}
                       <strong>
-                        {tong > 1000000
-                          ? new Intl.NumberFormat("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            }).format(tong)
-                          : new Intl.NumberFormat("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            }).format(tong + 30000)}
+                        {new Intl.NumberFormat("it-IT", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(listOrder[0]?.tong_tien_hdx)}
                       </strong>
                     </p>
                   </div>
@@ -341,25 +349,31 @@ function ExportInvoice() {
                             <p>{ten_sp}</p>
                           </div>
                           <div className="w-[15%]">
-                            <p className="text-[18px] font-bold">
-                              {!!giam_gia ? (
-                                <>
-                                  {new Intl.NumberFormat("vi-VN", {
+                            {!!giam_gia ? (
+                              <>
+                                <p className="text-slate-700 text-center line-through">
+                                  {new Intl.NumberFormat("it-IT", {
+                                    style: "currency",
+                                    currency: "VND",
+                                  }).format(gia_ban_sp)}
+                                </p>
+                                <p className="text-[18px] font-bold">
+                                  {new Intl.NumberFormat("it-IT", {
                                     style: "currency",
                                     currency: "VND",
                                   }).format(
                                     gia_ban_sp - (gia_ban_sp * giam_gia) / 100
                                   )}
-                                </>
-                              ) : (
-                                <>
-                                  {new Intl.NumberFormat("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                  }).format(gia_ban_sp)}
-                                </>
-                              )}
-                            </p>
+                                </p>
+                              </>
+                            ) : (
+                              <p className="text-[18px] font-bold">
+                                {new Intl.NumberFormat("it-IT", {
+                                  style: "currency",
+                                  currency: "VND",
+                                }).format(gia_ban_sp)}
+                              </p>
+                            )}
                           </div>
                           <div className="w-[33%] text-center">
                             <p className="text-[16px] text-slate-600">
@@ -420,7 +434,7 @@ function ExportInvoice() {
       ten_kh: ten_kh,
       sdt_kh: so_dien_thoai,
       dia_chi: dia_chi_hdx,
-      tong_tien: `${new Intl.NumberFormat("vi-VN", {
+      tong_tien: `${new Intl.NumberFormat("it-IT", {
         style: "currency",
         currency: "VND",
       }).format(tong_tien_hdx)}`,
@@ -487,7 +501,7 @@ function ExportInvoice() {
                           <td>{item.ten_sp}</td>
                           <td className="cost">
                             {item.so_luong_xuat} X &nbsp;
-                            {new Intl.NumberFormat("vi-VN", {
+                            {new Intl.NumberFormat("it-IT", {
                               style: "currency",
                               currency: "VND",
                             }).format(item.gia_ban_sp)}{" "}
@@ -500,35 +514,43 @@ function ExportInvoice() {
                     <tr className="ship">
                       <td className="shipname">Khuyến mãi</td>
                       <td colSpan={2} className="shipnumber">
-                        {new Intl.NumberFormat("vi-VN", {
+                        {new Intl.NumberFormat("it-IT", {
                           style: "currency",
                           currency: "VND",
                         }).format(khuyenmai)}{" "}
                       </td>
                     </tr>
                     <tr className="ship">
+                      <td className="shipname">Thành viên</td>
+                      <td colSpan={2} className="shipnumber">
+                        {thanhvien === 1
+                          ? "-5%"
+                          : thanhvien === 2
+                          ? "-10%"
+                          : thanhvien === 3
+                          ? "-20%"
+                          : "0%"}
+                        {/* {new Intl.NumberFormat("it-IT", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(khuyenmai)}{" "} */}
+                      </td>
+                    </tr>
+                    <tr className="ship">
                       <td className="shipname">Phí vận chuyển</td>
                       <td colSpan={2} className="shipnumber">
-                        {tong > 1000000
-                          ? "Miễn Phí"
-                          : new Intl.NumberFormat("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            }).format(30000)}
+                        {tong > 1000000 || thanhvien !== 0
+                          ? "Miễn phí"
+                          : "30000 VND"}
                       </td>
                     </tr>
                     <tr className="total">
                       <td className="name">Tổng tiền</td>
                       <td colSpan={2} className="number">
-                        {tong > 1000000
-                          ? new Intl.NumberFormat("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            }).format(tong)
-                          : new Intl.NumberFormat("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            }).format(tong + 30000)}
+                        {new Intl.NumberFormat("it-IT", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(listOrder[0]?.tong_tien_hdx)}
                       </td>
                     </tr>
                   </tfoot>
