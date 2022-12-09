@@ -115,7 +115,6 @@ Product.getDetail = (key,result) => {
       return;
     }
     console.log("Get id product");
-    console.log(res);
     result(null, res);
   });
 };
