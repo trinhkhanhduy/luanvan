@@ -8,7 +8,6 @@ module.exports = {
       });
     }
     if (req.body.thuonghieu === "undefined" || req.body.page === "undefined") {
-      console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
       for (let i = 0; i < req.files.length; i++) {
         const image = new Anhbia({
           anhbia: req.files[i].path,
@@ -24,6 +23,7 @@ module.exports = {
           } else res.status(200);
         });
       }
+      res.status(200).send("success");
     } else {
       for (let i = 0; i < req.files.length; i++) {
         const image = new Anhbia({
