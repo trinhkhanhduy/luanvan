@@ -27,8 +27,14 @@ function LoginManage() {
   let navigate = useNavigate();
   useEffect(() => {
     const routeLogin = () => {
-      if (isLogin) {
+      if (isLogin?.id_cv === "CV01") {
         navigate("/manage/dashboard", { replace: true });
+      }
+      if (isLogin?.id_cv === "CV02") {
+        navigate("/manage/bill/export_invoice", { replace: true });
+      }
+      if (isLogin?.id_cv === "CV03") {
+        navigate("/manage/bill/import_invoice", { replace: true });
       }
     };
     routeLogin(); // eslint-disable-next-line react-hooks/exhaustive-deps

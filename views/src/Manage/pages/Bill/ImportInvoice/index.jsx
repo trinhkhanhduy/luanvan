@@ -5,7 +5,7 @@ import { useSnackbar } from "notistack";
 import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import moment from "moment";
-import csvAPI from "../../../../api/csvAPI";
+// import csvAPI from "../../../../api/csvAPI";
 import detailProductAPI from "../../../../api/detailProductAPI";
 import colorAPI from "../../../../api/colorAPI";
 import TableData from "./tableData";
@@ -53,7 +53,6 @@ function ImportInvoice() {
     (async () => {
       try {
         const res_products = await productAPI.getProductListManage();
-
         setDataProduct(res_products);
         const res_importInvoice =
           await importInvoiceAPI.getListImportInvoiceAPI();
@@ -137,7 +136,9 @@ function ImportInvoice() {
     const res = await importInvoiceAPI.deleteImportInvoice(idhdn);
     setCount((e) => e + 1);
   };
-
+  const deleteRow =(idindex)=>{
+    setImportInvoiceData(importInvoiceData.filter((item,index)=> index !== idindex))
+  }
   const columns = [
     {
       field: "idhdn",
@@ -187,6 +188,7 @@ function ImportInvoice() {
       ),
     },
   ];
+  console.log(importInvoiceData)
 
   const rows = importInvoiceList?.map(
     ({ id_hdn, ngay_lap_hdn, ten_nv }, idx) => ({
@@ -278,7 +280,7 @@ function ImportInvoice() {
             </form>
 
             <div className="mt-4">
-              <TableData rows={importInvoiceData} />
+              <TableData rows={importInvoiceData} datashoe={dataProduct} deletetrow ={deleteRow} />
               <button
                 onClick={handleImportInvoiceData}
                 className="block mt-4 ml-auto mr-0 py-2 px-4 bg-lime-600 text-white rounded-lg"

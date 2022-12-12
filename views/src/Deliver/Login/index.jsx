@@ -8,6 +8,7 @@ import { login } from "../../redux/employeeSlice";
 import { useSnackbar } from "notistack";
 import FormLogin from "./FormLogin";
 import { sha256 } from "js-sha256";
+import img0 from "../../assets/logo.png"
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -67,8 +68,8 @@ function Login() {
 
   return (
     <div>
-      <div className="text-[35px] font-[900] text-center text-blue-500 bg-text-color bg-clip-text mt-[10%]">
-        GIAO HÀNG
+      <div className="  w-[200px] h-[200px] absolute top-[15%] left-[50%] translate-x-[-50%]">
+       <img src={img0}/>
       </div>
       <div className="absolute  top-[55%] left-2/4 -translate-x-2/4 -translate-y-2/4 w-[90%] max-w-[500px]  bg-[#F1F5F9] rounded-xl shadow-lg p-10 border-2 ">
         <p className="text-[35px] font-bold text-center">ĐĂNG NHẬP</p>

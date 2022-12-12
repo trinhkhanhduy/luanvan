@@ -4,13 +4,13 @@ import brandAPI from "../../../api/brandAPI";
 import sizeAPI from "../../../api/sizeAPI";
 import filterAPI from "../../../api/filterAPI";
 
-import Card from "../../../components/Card";
+import CardProduct from "../../../components/Card";
 import Footer from "../../../components/Footer";
 import { addListProductSale, product } from "../../../redux/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Slider from "@mui/material/Slider";
 import productAPI from "../../../api/productAPI";
-import { unwrapResult } from "@reduxjs/toolkit";
+// import { unwrapResult } from "@reduxjs/toolkit";
 
 function Sales() {
   const [brand, setBrand] = useState([]);
@@ -48,9 +48,7 @@ function Sales() {
       }
   
     })();
-    // return () => {
-    //   isMout.current = false;
-    // };
+
   }, [checked]);
 
   const filterSort = async (data) => {
@@ -173,7 +171,7 @@ function Sales() {
         <div className="w-[80%] min-h-[53vh] mx-auto mt-5">
           <div className="grid grid-cols-4 gap-5">
             {dataProductsale?.map((data, idx) => (
-              <Card key={idx} data={data} />
+              <CardProduct key={idx} data={data} />
             ))}
           </div>
           <p

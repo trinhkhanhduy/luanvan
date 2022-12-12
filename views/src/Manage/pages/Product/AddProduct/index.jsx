@@ -59,9 +59,9 @@ function AddProduct() {
   //   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   // };
   const uploadImage = async (e) => {
-    setListImage(e.target.files);
     const imageNumber = e.target.files.length + imageUrl.length;
     if (imageNumber <= 5) {
+      setListImage(e.target.files);
       let i = 0;
       for (i; i < e.target.files.length; i++) {
         const file = e.target.files[i];
@@ -70,12 +70,14 @@ function AddProduct() {
         setImageUrl((oldFile) => [...oldFile, { url: base64 }]);
       }
     } else {
-      enqueueSnackbar("Image is max 5", {
+
+      enqueueSnackbar("Tối đa 5 ảnh", {
         variant: "error",
         autoHideDuration: 2000,
       });
     }
   };
+// console.log(listImage)
 
   const btnActive = () => {
     document.getElementById("default-btn").click();
@@ -86,6 +88,7 @@ function AddProduct() {
       reset(defaultValues);
       setDetailProduct([]);
       setListImage([]);
+      setImageUrl([]);
     }
   }, [formState, submittedData, reset]);
 
@@ -133,10 +136,13 @@ function AddProduct() {
     }
   };
 
-  const handleRemoveImage = (e) => {
-    const name = e.target.getAttribute("name");
-    setImageUrl(imageUrl.filter((item) => item.url !== name));
+  const handleRemoveImage = (id) => {
+    // const name = e.target.getAttribute("name");
+    // console.log(name)
+    // console.log(imageUrl.filter((item) => item.url !== name))
+    setImageUrl(imageUrl.filter((item,index) => index !== id));
   };
+  console.log(listImage)
 
   const renderImage = imageUrl?.map((urlImage, idx) => {
     return (
@@ -149,7 +155,7 @@ function AddProduct() {
         <div
           className="absolute -top-1 -right-1 bg-red-600 text-center text-[12px] text-white px-[6px] rounded-full cursor-pointer"
           name={urlImage.url}
-          onClick={handleRemoveImage}
+          onClick={()=>handleRemoveImage(idx)}
         >
           x
         </div>
@@ -175,7 +181,9 @@ function AddProduct() {
     const newDetailProducts = [...detailProduct, newDetailProduct];
     setDetailProduct(newDetailProducts);
   };
-
+  const deleteRow = (idrow) => {
+    setDetailProduct(detailProduct.filter((item, index) => index !== idrow));
+  };
   const handleOnChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -252,7 +260,7 @@ function AddProduct() {
                   multiple
                 />
                 <div
-                  className="w-[100px] h-[100px] border border-slate-400 rounded-lg cursor-pointer"
+                  className="w-[100px] h-[100px] border border-slate-400 rounded-lg cursor-pointer "
                   onClick={() => btnActive()}
                 >
                   <div className="text-[25px] text-[#ccc] text-center leading-[90px] ">
@@ -368,6 +376,7 @@ function AddProduct() {
               <th className="w-[20%] h-8 border border-slate-400">
                 Kích Thước
               </th>
+              <th className="w-[20%] h-8 border border-slate-400">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -378,6 +387,12 @@ function AddProduct() {
                 </td>
                 <td className="text-center border border-slate-400">
                   {size.filter((item) => item.id_kt === kichthuoc)[0].ten_kt}
+                </td>
+                <td
+                  className="w-[20%] text-center border border-slate-400 cursor-pointer hover:bg-zinc-500"
+                  onClick={() => deleteRow(idx)}
+                >
+                  x
                 </td>
               </tr>
             ))}

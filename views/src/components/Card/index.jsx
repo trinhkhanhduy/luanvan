@@ -1,4 +1,4 @@
-import React, { useEffect , useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import imageAPI from "../../api/imageAPI";
 import { useSnackbar } from "notistack";
@@ -6,21 +6,26 @@ import { useSnackbar } from "notistack";
 function Card({ data }) {
   const [urlImage, setUrlImage] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
-
+  const [mout, setMount] = useState(true);
   useEffect(() => {
-    (async () => {
+    const dataCard = async () => {
       try {
         const resUrlImage = await imageAPI.getImage(data.id_sp);
-
-        setUrlImage(resUrlImage);
+        if (mout) {
+          setUrlImage(resUrlImage);
+        }
       } catch (error) {
         enqueueSnackbar(error.message, {
           variant: "error",
           autoHideDuration: 2000,
         });
       }
-    })();
-  }, [data]);
+      };
+    dataCard();
+    return () => {
+      setMount(false);
+    };
+  }, [data, mout]);
 
   return (
     <>

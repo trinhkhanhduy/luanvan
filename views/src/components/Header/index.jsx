@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Badge from "@mui/material/Badge";
 import { useSnackbar } from "notistack";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import brandAPI from "../../api/brandAPI";
 import { BiUserCircle } from "react-icons/bi";
 import { FiShoppingCart } from "react-icons/fi";
@@ -290,6 +290,11 @@ function Header() {
                 <Link to="/shop/changePass">
                   <p className="hover:bg-slate-100 py-2 px-4 text-[16px] text-center">
                     Đổi mật khẩu
+                  </p>
+                </Link>
+                <Link to="/shop/member">
+                  <p className="hover:bg-slate-100 py-2 px-4 text-[16px] text-center">
+                    Thành viên
                   </p>
                 </Link>
                 <p

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-
+import img0 from "../../assets/logo.png"
 import deliverAPI from "../../api/deliverAPI";
 import exportInvoiceAPI from "../../api/exportInvoiceAPI";
 import detailExportInvoiceAPI from "../../api/detailExportInvoiceAPI";
@@ -27,31 +27,15 @@ function Dashbroad() {
   const [invoice2, setInvoice2] = useState([]);
   const [count, setCount] = useState(0);
   const [note, setNote] = useState("");
-  const [money, setMoney] = useState("");
-  const [sumPrice, setSumPrice] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const id_nv = useSelector(
     (state) => state.employee?.currentDeliver[0]?.id_nv
   );
-  const id_kh = useSelector((state) => state?.user?.current.dataUser[0]?.id_kh);
-  const listBuy = useSelector((state) => state?.listbuy?.list);
   const naviagte = useNavigate();
   useEffect(() => {
     (async () => {
-      let a = 0;
-      if (listBuy.length !== 0) {
-        for (let i = 0; i < listBuy.length; i++) {
-          a +=
-            listBuy[i]?.so_luong_xuat *
-            (listBuy[i]?.gia_ban -
-              (listBuy[i]?.gia_ban * listBuy[i]?.giam_gia) / 100);
-        }
-        setSumPrice(a);
-      }
-      const totalMoney = await userAPI.getSumMoneyUser(id_kh);
-      setMoney(totalMoney[0]?.tongtien);
       if (id_nv) {
         const res_1 = await deliverAPI.getInvoiceStatus(id_nv, {
           status: "Đang xử lý",
@@ -66,7 +50,6 @@ function Dashbroad() {
       }
     })();
   }, [count]);
-
   const waitShip = async (idhdx) => {
     await deliverAPI.updateStatus({
       idhdx: idhdx,
@@ -76,16 +59,10 @@ function Dashbroad() {
     await exportInvoiceAPI.updateStatus(idhdx, {
       status: "Đang giao hàng",
     });
+
     setCount((e) => e + 1);
   };
-  const typeMember =
-    sumPrice + money >= 10000000 && sumPrice + money < 30000000
-      ? 1
-      : sumPrice + money >= 30000000 && sumPrice + money < 50000000
-      ? 2
-      : sumPrice + money >= 50000000
-      ? 3
-      : 0;
+
   const cancelShip = async (idhdx) => {
     await deliverAPI.deleteInvoice(idhdx);
     await exportInvoiceAPI.updateStatus(idhdx, {
@@ -93,7 +70,18 @@ function Dashbroad() {
     });
     setCount((e) => e + 1);
   };
-  const successShip = async (idhdx) => {
+  const successShip = async (idhdx, tongtien, idkh) => {
+    const totalMoney = await userAPI.getSumMoneyUser(idkh);
+    const typeMember =
+      tongtien + totalMoney[0]?.tongtien >= 10000000 &&
+      tongtien + totalMoney[0]?.tongtien < 30000000
+        ? 1
+        : tongtien + totalMoney[0]?.tongtien >= 30000000 &&
+          tongtien + totalMoney[0]?.tongtien < 50000000
+        ? 2
+        : tongtien + totalMoney[0]?.tongtien >= 50000000
+        ? 3
+        : 0;
     await deliverAPI.updateStatus({
       idhdx: idhdx,
       ngaygh: moment().format("YYYY-MM-DD"),
@@ -102,7 +90,8 @@ function Dashbroad() {
     await exportInvoiceAPI.updateStatus(idhdx, {
       status: "Đã giao hàng",
     });
-    await userAPI.updateMember(id_kh, typeMember);
+    console.log("tongngoai:", tongtien, "khach", totalMoney[0]?.tongtien, "type", typeMember);
+    await userAPI.updateMember(idkh, typeMember);
     setCount((e) => e + 1);
   };
 
@@ -127,12 +116,12 @@ function Dashbroad() {
     }
     setCount((e) => e + 1);
   };
-
   return (
     <div className="pb-20">
-      <div className="py-5">
-        <p className="text-[35px] font-[900] text-center bg-text-color bg-clip-text text-transparent">
-          DShop
+    <div className="py-5">
+        <p className="w-[150px] h-[150px] relative left-[50%] translate-x-[-50%]">
+          {" "}
+          <img src={img0} />
         </p>
       </div>
       <div className="px-4">
@@ -147,6 +136,7 @@ function Dashbroad() {
                 tong_tien_hdx,
                 dia_chi_hdx,
                 trang_thai_gh,
+                id_kh,
               },
               idx
             ) => (
@@ -189,7 +179,7 @@ function Dashbroad() {
                 {trang_thai_gh === "Đang giao hàng" && (
                   <>
                     <button
-                      onClick={() => successShip(id_hdx)}
+                      onClick={() => successShip(id_hdx, tong_tien_hdx, id_kh)}
                       className="block mt-4 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md"
                     >
                       Xác nhận giao hàng
@@ -247,6 +237,7 @@ function Dashbroad() {
                 tong_tien_hdx,
                 dia_chi_hdx,
                 trang_thai_gh,
+                id_kh,
               },
               idx
             ) => (

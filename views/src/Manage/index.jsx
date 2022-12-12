@@ -8,6 +8,7 @@ import Category from "./pages/Category";
 import Customer from "./pages/Customer";
 import Reviews from "./pages/Reviews";
 import PrivateRoutes from "./PrivateRoutes";
+import img0 from "../assets/logo.png"
 const LoginManage = React.lazy(() => import("./pages/LoginManage"));
 const Staff = React.lazy(() => import("./pages/Staff"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
@@ -25,8 +26,8 @@ function Manage() {
       <div className="h-[100vh]">{isLogin ? <Navigation /> : ""}</div>
       <div className="flex-1 ">
         {!isLogin ? (
-          <div className="text-[35px] font-[900]  text-blue-500 bg-text-color bg-clip-text absolute left-[50%] translate-x-[-50%]">
-            DShop
+          <div className=" font-[900]  text-blue-500 bg-text-color bg-clip-text absolute left-[50%] translate-x-[-50%] w-[200px] h-[200px]">
+            <img src={img0}/>
           </div>
         ) : (
           ""

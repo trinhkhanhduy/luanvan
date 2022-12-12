@@ -10,7 +10,7 @@ import { addListProduct, product } from "../../../redux/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Slider from "@mui/material/Slider";
 import productAPI from "../../../api/productAPI";
-import { unwrapResult } from "@reduxjs/toolkit";
+// import { unwrapResult } from "@reduxjs/toolkit";
 
 function Products() {
   const [brand, setBrand] = useState([]);
@@ -24,6 +24,8 @@ function Products() {
   // const isMout = useRef(true);
   useEffect(() => {
     (async () => {
+      console.log("âbbb")
+
       // unwrapResult(dispatch(product()));
       const brand = await brandAPI.getList();
       const size = await sizeAPI.getList();

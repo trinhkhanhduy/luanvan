@@ -44,9 +44,11 @@ function Index() {
       }
       formData.append("thuonghieu",valueBrand)
       formData.append("page",valuePage)
-      await bannerApi.createBanner(formData);
+      const abc = await bannerApi.createBanner(formData);
+      console.log(abc)
       const bannerAffter = await bannerApi.getBanner();
       setBanner(bannerAffter);
+      setImageUrl([])
     }
   };
 

@@ -7,6 +7,8 @@ import moment from "moment";
 import exportInvoiceAPI from "../../../api/exportInvoiceAPI";
 import detailExportInvoiceAPI from "../../../api/detailExportInvoiceAPI";
 import { useSnackbar } from "notistack";
+import img0 from "../../../assets/img/img0.png";
+
 function Index() {
   const { enqueueSnackbar } = useSnackbar();
   const [member, setMember] = useState([]);
@@ -16,9 +18,6 @@ function Index() {
   const [cancelOrder, setCancelOrder] = useState([]);
   const [refundOrder, setRefundOrder] = useState([]);
   const id_kh = useSelector((state) => state?.user?.current.dataUser[0]?.id_kh);
-  const thanh_vien = useSelector(
-    (state) => state?.user?.current.dataUser[0]?.thanh_vien
-  );
   useEffect(() => {
     (async () => {
       try {
@@ -83,24 +82,33 @@ function Index() {
   return (
     <div className="member">
       <div className="center">
-        <div className="card">
+        <div className="cardm">
           <div className="additional">
             <div className="user-card">
               <div className="level center">
                 <EmojiEventsOutlinedIcon
                   sx={{
                     color:
-                      thanh_vien === 1
+                      member[0]?.thanh_vien === 1
                         ? "#E1E1E2"
-                        : thanh_vien === 2
+                        : member[0]?.thanh_vien === 2
                         ? "yellow"
-                        : thanh_vien === 2
+                        : member[0]?.thanh_vien === 2
                         ? "red"
                         : "brown",
                     width: "50px",
                     height: "50px",
                   }}
                 />
+              </div>
+              <div className="absolute top-[50%] left-[50%] translate-x-[-55%] translate-y-[-50%] w-[150px] text-center thanhvien">
+                {member[0]?.thanh_vien === 1
+                  ? "Bạc"
+                  : member[0]?.thanh_vien === 2
+                  ? "Vàng"
+                  : member[0]?.thanh_vien === 2
+                  ? "kim cương"
+                  : "Đồng"}
               </div>
               <div className="points center">
                 {new Intl.NumberFormat("it-IT", {
@@ -109,17 +117,18 @@ function Index() {
                 }).format(money)}
               </div>
             </div>
-            <div className="more-info">
-              <h1>{member[0]?.email_kh}</h1>
+            <div className="more-info ">
+              <h1 className="text-[20px] text-slate-50">Tên khách hàng</h1>
+              <h1 className="font-extrabold italic text-[25px] text-yellow-300">{member[0]?.email_kh}</h1>
               <div className="coords">
-                <span>Ngày tạo tài khoản</span>
-                <span>Trạng thái tài khoản</span>
+                <span className="text-[17px]">Ngày tạo tài khoản</span>
+                <span className="text-[17px]">Trạng thái tài khoản</span>
               </div>
-              <div className="coords">
-                <span>
+              <div className="coords ">
+                <span className="italic text-[20px] ">
                   {moment(member[0]?.ngay_tao_tk).format("DD/MM/YYYY")}
                 </span>
-                <span>
+                <span className="italic text-[20px]">
                   {member[0]?.trang_thai_kh === 0
                     ? "Đang hoạt động"
                     : "Tài khoản bị khóa"}
@@ -127,36 +136,39 @@ function Index() {
               </div>
               <div className="stats">
                 <div>
-                  <div className="title">tat ca</div>
+                  <div className="title">Thành công</div>
                   <i className="fa fa-trophy"></i>
-                  <div className="value">{allOrder.length}</div>
+                  <div className="value"> {successOrser.length}</div>
                 </div>
                 <div>
-                  <div className="title">thanh cong</div>
+                  <div className="title">Đơn hoàn</div>
                   <i className="fa fa-gamepad"></i>
-                  <div className="value">{successOrser.length}</div>
+                  <div className="value">{refundOrder.length}</div>
                 </div>
                 <div>
-                  <div className="title">huy</div>
+                  <div className="title">Đơn hủy</div>
                   <i className="fa fa-group"></i>
                   <div className="value">{cancelOrder.length}</div>
                 </div>
                 <div>
-                  <div className="title">hoanf</div>
+                  <div className="title">Tổng đơn</div>
                   <i className="fa fa-coffee"></i>
-                  <div className="value infinity">{refundOrder.length}</div>
+                  <div className="value infinity">{allOrder.length}</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="general">
-            <h1>Jane Doe</h1>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a
-              volutpat mauris, at molestie lacus. Nam vestibulum sodales odio ut
-              pulvinar.
-            </p>
-            <span className="more">Mouse over the card for more info</span>
+          <div className="general ">
+            <div className="relative flex justify-center items-center top-[50%] translate-y-[-50%] translate-x-[-50%] left-[50%]">
+              <img
+                className="animation_spin block w-[80%] rotate-[-20deg] z-20 absolute left-[5%]"
+                src={img0}
+                alt="hinh anh"
+              />
+              <div className="absolute w-[240px] h-[240px] bg-[#ffe2a8] rounded-[50%] z-10 shadow-xl "></div>
+              <div className="absolute w-[220px] h-[220px] bg-[#FFEBC2] rounded-[50%] z-10"></div>
+            </div>
+            <span className="more italic">Thẻ thành viên Dshop</span>
           </div>
         </div>
       </div>
