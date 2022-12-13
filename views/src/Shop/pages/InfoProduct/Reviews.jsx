@@ -9,7 +9,7 @@ function ReviewsProduct({data}) {
   useEffect(() => {
     (async () => {
       const resImageReview = await imageReviewAPI.getImage(data.id_dg);
-      console.log(resImageReview);
+ 
       setImagereview(resImageReview);
     })();
   }, []);

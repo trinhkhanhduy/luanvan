@@ -56,8 +56,8 @@ function Cart() {
       deleteCart(id, id_ms, id_kt);
     }
   };
-  const plusNumber = (id, soluong, id_ms) => {
-    dispatch(setQuantity({ id_sp: id, so_luong_xuat: soluong, id_ms: id_ms }));
+  const plusNumber = (id, soluong, id_ms,id_kt) => {
+    dispatch(setQuantity({ id_sp: id, so_luong_xuat: soluong, id_ms: id_ms ,id_kt:id_kt}));
   };
   const payCart = async () => {
     try {
@@ -132,7 +132,7 @@ function Cart() {
             </div>
             <div className="flex relative gap-1 ml-3 w-[90px] ">
               <IconButton
-                onClick={() => plusNumber(id_sp, so_luong_xuat + 1, id_ms)}
+                onClick={() => plusNumber(id_sp, so_luong_xuat + 1, id_ms,id_kt)}
                 disabled={so_luong_xuat >= soluong ? true : false}
                 sx={{ color: "red" }}
               >

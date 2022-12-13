@@ -19,7 +19,6 @@ import { Rating } from "@mui/material";
 
 function InfoProduct() {
   const isLogin = useSelector((state) => state.user.current?.dataUser?.length);
-  console.log(isLogin);
   let params = useParams();
   const dispatch = useDispatch();
   const navigation = useNavigate();
@@ -38,6 +37,8 @@ function InfoProduct() {
   const [slSize, setSlSize] = useState("");
   const [danhgia, setdanhgia] = useState([]);
   const cartList = useSelector((state) => state.cart?.cartItem);
+  // const errorNumber = useSelector(state => state.cart.errorNumber)
+  
   useEffect(() => {
     (async () => {
       const resProduct = await productAPI.getProduct(params.SP);
@@ -55,12 +56,13 @@ function InfoProduct() {
       setdanhgia(resdanhgia);
     })();
   }, [params, cartList]);
-
   const sum = danhgia.reduce((accumulator, value) => {
     return accumulator + value.so_sao;
   }, 0);
   const soluong = 1;
   const addCart = (idsp) => {
+  
+
     if (!isLogin) {
       enqueueSnackbar("Vui lòng đăng nhập", {
         variant: "error",
@@ -79,7 +81,7 @@ function InfoProduct() {
             ten_ms: slSize[0]?.ten_ms,
             ten_kt: slSize[0]?.ten_kt,
             so_luong_xuat: JSON.parse(soluong),
-            soluong:numberProduct,
+            soluong: numberProduct,
             gia_ban: product[0]?.gia_ban_sp,
             hinh_anh: image[0]?.hinh_anh_sp.slice(
               12,
@@ -126,7 +128,7 @@ function InfoProduct() {
               id_ms: slSize[0].id_ms,
               id_kt: slSize[0].id_kt,
               ten_ms: slSize[0].ten_ms,
-              soluong:numberProduct,
+              soluong: numberProduct,
               ten_kt: slSize[0].ten_kt,
               giam_gia: product[0].gia_km,
               gia_ban: product[0].gia_ban_sp,
@@ -177,7 +179,6 @@ function InfoProduct() {
       idkt,
       slColor
     );
-
 
     setNumberProduct(result[0].so_luong_sp);
     setSlSize(result);
@@ -344,7 +345,9 @@ function InfoProduct() {
             </p>
             <p className="text-[22px] text-center font-medium ml-5">
               <sup>
-                {isNaN(sum / danhgia.length) ? "" : (sum / danhgia.length).toFixed(0)}
+                {isNaN(sum / danhgia.length)
+                  ? ""
+                  : (sum / danhgia.length).toFixed(0)}
               </sup>
               /<sub>5</sub>
             </p>
